@@ -13,9 +13,11 @@ destroy: ## Burn it all down!
 
 agents: ## reates a symlink to  $HOME/.claude/skills for each skill under ./agents.
 	./setup/scripts/01-install-agents.sh
+	./setup/scripts/04-install-global-agent-rules.sh
 
 skills: ## Creates a symlink to  $HOME/.claude/skills for each skill under ./skills.
 	./setup/scripts/02-install-skills.sh
 
 commands: ## Creates a symlink to $HOME/.claude/commands for each command under ./commands/.
 	./setup/scripts/03-install-commands.sh
+
