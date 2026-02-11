@@ -149,10 +149,11 @@ The `setup/scripts/installer.sh` script orchestrates the complete setup by runni
 | `00-start-memory-infra.sh`         | Start Cognee Docker services (MCP, API, PostgreSQL, Neo4j) and wait for health checks |
 | `01-install-agents.sh`             | Copy agent definitions to `~/.claude/agents/` (preserves user-created agents)         |
 | `02-install-skills.sh`             | Copy skill definitions to `~/.claude/skills/`                                         |
-| `03-install-global-agent-rules.sh` | Install coordination rules to `~/.claude/CLAUDE.md`                                   |
-| `04-validate-metadata.sh`          | Validate YAML frontmatter on all pattern files                                        |
-| `05-load-patterns.sh`              | Load pattern files into Cognee datasets via REST API                                  |
-| `06-enrich-patterns.sh`            | Process loaded patterns into knowledge graph relationships                            |
+| `03-install-commands.sh`           | Install command definitions to `~/.claude/commands/`                                  |
+| `04-install-global-agent-rules.sh` | Install coordination rules to `~/.claude/CLAUDE.md`                                   |
+| `05-validate-metadata.sh`          | Validate YAML frontmatter on all pattern files                                        |
+| `06-load-patterns.sh`              | Load pattern files into Cognee datasets via REST API                                  |
+| `07-enrich-patterns.sh`            | Process loaded patterns into knowledge graph relationships                            |
 
 All logs are written to `setup/scripts/logs/{TIMESTAMP}/` with one log file per script.
 
@@ -166,8 +167,8 @@ To re-load patterns after editing them:
 
 ```bash
 cd setup
-./scripts/05-load-patterns.sh
-./scripts/06-enrich-patterns.sh
+./scripts/06-load-patterns.sh
+./scripts/07-enrich-patterns.sh
 ```
 
 See [setup/README.md](setup/README.md) for manual setup steps, service endpoints, teardown, and troubleshooting.
@@ -180,7 +181,7 @@ All shell scripts are validated with [ShellCheck](https://www.shellcheck.net/):
 shellcheck setup/scripts/*.sh
 ```
 
-Pattern metadata is validated by `04-validate-metadata.sh`, which checks that every pattern file has the required YAML frontmatter fields defined in [PATTERN-METADATA-SCHEMA.md](patterns/PATTERN-METADATA-SCHEMA.md).
+Pattern metadata is validated by `05-validate-metadata.sh`, which checks that every pattern file has the required YAML frontmatter fields defined in [PATTERN-METADATA-SCHEMA.md](patterns/PATTERN-METADATA-SCHEMA.md).
 
 ### Versioning
 

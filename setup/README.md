@@ -98,10 +98,11 @@ This orchestrates the complete setup:
 1. Starts Docker containers (Cognee MCP, API, PostgreSQL, Neo4j)
 2. Installs agent definitions to `~/.claude/agents/`
 3. Installs skill definitions to `~/.claude/skills/`
-4. Installs global agent rules to `~/.claude/CLAUDE.md`
-5. Validates pattern metadata
-6. Loads patterns into Cognee datasets (one dataset per subdirectory)
-7. Enriches patterns with knowledge graph relationships
+4. Installs command definitions to `~/.claude/commands/`
+5. Installs global agent rules to `~/.claude/CLAUDE.md`
+6. Validates pattern metadata
+7. Loads patterns into Cognee datasets (one dataset per subdirectory)
+8. Enriches patterns with knowledge graph relationships
 
 All logs are written to `scripts/logs/{TIMESTAMP}/` with one log file per script.
 
@@ -204,45 +205,55 @@ Installs skill definitions to `~/.claude/skills/`.
 
 Logs to `scripts/logs/{TIMESTAMP}/02-install-skills.log`
 
-### 03-install-global-agent-rules.sh
+### 03-install-commands.sh
+
+Installs command definitions to `~/.claude/commands/`.
+
+```bash
+./scripts/03-install-commands.sh
+```
+
+Logs to `scripts/logs/{TIMESTAMP}/03-install-commands.log`
+
+### 04-install-global-agent-rules.sh
 
 Installs global agent rules to `~/.claude/CLAUDE.md`.
 
 ```bash
-./scripts/03-install-global-agent-rules.sh
+./scripts/04-install-global-agent-rules.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/03-install-global-agent-rules.log`
+Logs to `scripts/logs/{TIMESTAMP}/04-install-global-agent-rules.log`
 
-### 04-validate-metadata.sh
+### 05-validate-metadata.sh
 
 Validates pattern metadata before loading.
 
 ```bash
-./scripts/04-validate-metadata.sh
+./scripts/05-validate-metadata.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/04-validate-metadata.log`
+Logs to `scripts/logs/{TIMESTAMP}/05-validate-metadata.log`
 
-### 05-load-patterns.sh
+### 06-load-patterns.sh
 
 Loads patterns into Cognee datasets (one dataset per subdirectory).
 
 ```bash
-./scripts/05-load-patterns.sh
+./scripts/06-load-patterns.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/05-load-patterns.log`
+Logs to `scripts/logs/{TIMESTAMP}/06-load-patterns.log`
 
-### 06-enrich-patterns.sh
+### 07-enrich-patterns.sh
 
 Enriches patterns with knowledge graph relationships.
 
 ```bash
-./scripts/06-enrich-patterns.sh
+./scripts/07-enrich-patterns.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/06-enrich-patterns.log`
+Logs to `scripts/logs/{TIMESTAMP}/07-enrich-patterns.log`
 
 ## Service Endpoints
 
@@ -420,7 +431,7 @@ The `scripts/installer.sh` script automatically handles pattern loading and proc
 
 ```bash
 cd setup
-./scripts/05-load-patterns.sh
+./scripts/06-load-patterns.sh
 ```
 
 This script:
@@ -429,7 +440,7 @@ This script:
 - Loads all `.md` files (except README.md) from `patterns/`
 - Adds files to the `patterns` dataset via `/api/v1/add` endpoint
 - Writes dataset name to `scripts/logs/{TIMESTAMP}/datasets-loaded.txt`
-- Logs to `scripts/logs/{TIMESTAMP}/05-load-patterns.log`
+- Logs to `scripts/logs/{TIMESTAMP}/06-load-patterns.log`
 
 **Environment variables:**
 
@@ -442,19 +453,19 @@ This script:
 Process specific datasets (from file):
 
 ```bash
-cat scripts/logs/datasets-loaded.txt | ./scripts/06-enrich-patterns.sh
+cat scripts/logs/datasets-loaded.txt | ./scripts/07-enrich-patterns.sh
 ```
 
 Process specific dataset (via echo):
 
 ```bash
-echo "patterns" | ./scripts/06-enrich-patterns.sh
+echo "patterns" | ./scripts/07-enrich-patterns.sh
 ```
 
 Process ALL datasets (no stdin):
 
 ```bash
-./scripts/06-enrich-patterns.sh
+./scripts/07-enrich-patterns.sh
 ```
 
 This script:
@@ -462,10 +473,10 @@ This script:
 - Accepts dataset names via stdin (piped or redirected)
 - If NO stdin data, cognifies ALL datasets
 - Calls `/api/v1/cognify` endpoint to build knowledge graphs
-- Logs to `scripts/logs/{TIMESTAMP}/06-enrich-patterns.log`
+- Logs to `scripts/logs/{TIMESTAMP}/07-enrich-patterns.log`
 - Processing runs asynchronously
 
-**Important:** The `05-enrich-patterns.sh` script does NOT accept command-line arguments. Arguments like `./scripts/06-enrich-patterns.sh patterns` will show an error. Use stdin only.
+**Important:** The `07-enrich-patterns.sh` script does NOT accept command-line arguments. Arguments like `./scripts/07-enrich-patterns.sh patterns` will show an error. Use stdin only.
 
 **Environment variables:**
 
@@ -483,12 +494,12 @@ docker compose logs -f cognee-api
 
 ```bash
 # Load patterns into Cognee dataset
-./scripts/05-load-patterns.sh
+./scripts/06-load-patterns.sh
 # Output: Writes "patterns" to scripts/logs/datasets-loaded.txt
 
 # Process into knowledge graph (choose one):
-cat scripts/logs/datasets-loaded.txt | ./scripts/06-enrich-patterns.sh  # Process loaded datasets
-./scripts/06-enrich-patterns.sh                                          # Process ALL datasets
+cat scripts/logs/datasets-loaded.txt | ./scripts/07-enrich-patterns.sh  # Process loaded datasets
+./scripts/07-enrich-patterns.sh                                          # Process ALL datasets
 
 # Monitor async processing
 docker compose logs -f cognee-api

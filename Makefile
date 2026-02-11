@@ -1,4 +1,4 @@
-.PHONY: help setup create destroy
+.PHONY: help setup create destroy agents skills commands
 
 default: help 
 
@@ -11,8 +11,11 @@ create: ## Does a complete setup - Cognee, agents, patterns...everything.
 destroy: ## Burn it all down!
 	docker compose -f setup/docker-compose.yaml down -v
 
-agents: ## Reinstalls just the agent defintions; no patterns or enrichment.
+agents: ## reates a symlink to  $HOME/.claude/skills for each skill under ./agents.
 	./setup/scripts/01-install-agents.sh
 
-skills: ## Reinstalls just the skills.
+skills: ## Creates a symlink to  $HOME/.claude/skills for each skill under ./skills.
 	./setup/scripts/02-install-skills.sh
+
+commands: ## Creates a symlink to $HOME/.claude/commands for each command under ./commands/.
+	./setup/scripts/03-install-commands.sh

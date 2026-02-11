@@ -10,7 +10,7 @@ PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 API_URL="${API_URL:-http://localhost:8000}"
 TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
 LOG_DIR="${SCRIPTS}/logs/${TIMESTAMP}"
-LOG_FILE="${LOG_DIR}/06-enrich-patterns.log"
+LOG_FILE="${LOG_DIR}/07-enrich-patterns.log"
 
 mkdir -p "${LOG_DIR}"
 

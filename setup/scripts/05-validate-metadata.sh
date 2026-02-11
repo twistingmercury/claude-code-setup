@@ -9,7 +9,7 @@ PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 # Logging setup
 TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
 LOG_DIR="${SCRIPTS}/logs/${TIMESTAMP}"
-LOG_FILE="${LOG_DIR}/04-validate-metadata.log"
+LOG_FILE="${LOG_DIR}/05-validate-metadata.log"
 
 mkdir -p "${LOG_DIR}"
 exec > >(tee -a "${LOG_FILE}") 2>&1

@@ -36,22 +36,26 @@ validate_environment() {
 # Build a list of agent basenames from the source directory.
 # An agent is any .md file in a subdirectory of agents/ (excludes top-level files
 # like ABOUT-THE-AGENTS.md).
-build_source_agent_list() {
-    find "${AGENT_SOURCE}" -mindepth 2 -type f -name "*.md" -exec basename {} \;
+list_repo_agents() {
+    find "${AGENT_SOURCE}" -mindepth 2 -type f -name "*.md" -not -path "*/commands/*" -exec basename {} \;
 }
 
-is_project_agent() {
+
+# Check if an agent basename exists in the repo's source list.
+# "Repo-managed agent" = from this repo; "user agent" = manually created in ~/.claude/agents/.
+# Used during removal to preserve user agents and only replace repo-managed ones.
+is_repo_managed_agent() {
     local agent_basename="${1}"
     local source_agents="${2}"
 
     printf '%s\n' "${source_agents}" | grep -qxF "${agent_basename}"
 }
 
-remove_project_agents() {
+remove_repo_managed_agents() {
     local removed_count=0
     local preserved_count=0
     local source_agents
-    source_agents="$(build_source_agent_list)"
+    source_agents="$(list_repo_agents)"
 
     if [ ! -d "${AGENTS_DIR}" ]; then
         return 0
@@ -60,15 +64,15 @@ remove_project_agents() {
     printf "Scanning existing agents...\n"
 
     for agent_file in "${AGENTS_DIR}"/*.md; do
-        if [ ! -f "${agent_file}" ]; then
+        if [ ! -f "${agent_file}" ] && [ ! -L "${agent_file}" ]; then
             continue
         fi
 
         local agent_name
         agent_name="$(basename "${agent_file}")"
 
-        if is_project_agent "${agent_name}" "${source_agents}"; then
-            printf "  Removing project agent: %s\n" "${agent_name}"
+        if is_repo_managed_agent "${agent_name}" "${source_agents}"; then
+            printf "  Removing repo agent: %s\n" "${agent_name}"
             rm -f "${agent_file}"
             removed_count=$((removed_count + 1))
         else
@@ -77,25 +81,25 @@ remove_project_agents() {
         fi
     done
 
-    printf "Removed %d project agent(s), preserved %d user agent(s)\n" "${removed_count}" "${preserved_count}"
+    printf "Removed %d repo agent(s), preserved %d user agent(s)\n" "${removed_count}" "${preserved_count}"
     return 0
 }
 
-install_project_agents() {
+symlink_repo_agents() {
     local installed_count=0
 
-    printf "Installing project agents from %s...\n" "${AGENT_SOURCE}"
+    printf "Installing repo agents from %s...\n" "${AGENT_SOURCE}"
 
     while IFS= read -r source_file; do
         local agent_name
         agent_name="$(basename "${source_file}")"
 
-        cp "${source_file}" "${AGENTS_DIR}${agent_name}"
+        ln -s "${source_file}" "${AGENTS_DIR}${agent_name}"
         printf "  Installed: %s\n" "${agent_name}"
         installed_count=$((installed_count + 1))
-    done < <(find "${AGENT_SOURCE}" -mindepth 2 -type f -name "*.md")
+    done < <(find "${AGENT_SOURCE}" -mindepth 2 -type f -name "*.md" -not -path "*/commands/*")
 
-    printf "Installed %d project agent(s)\n" "${installed_count}"
+    printf "Installed %d repo agent(s)\n" "${installed_count}"
     return 0
 }
 
@@ -109,13 +113,13 @@ install_agents() {
         mkdir -p "${AGENTS_DIR}"
     fi
 
-    if ! remove_project_agents; then
-        printf "ERROR: failed to remove project agents\n" >&2
+    if ! remove_repo_managed_agents; then
+        printf "ERROR: failed to remove repo agents\n" >&2
         return 1
     fi
 
-    if ! install_project_agents; then
-        printf "ERROR: failed to install project agents\n" >&2
+    if ! symlink_repo_agents; then
+        printf "ERROR: failed to install repo agents\n" >&2
         return 1
     fi
 

@@ -35,22 +35,22 @@ validate_environment() {
 
 # Build a list of skill directory names from the source.
 # A skill is any subdirectory of skills/ that contains a SKILL.md file.
-build_source_skill_list() {
+list_repo_skills() {
     find "${SKILL_SOURCE}" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
 }
 
-is_project_skill() {
+is_repo_managed_skill() {
     local skill_name="${1}"
     local source_skills="${2}"
 
     printf '%s\n' "${source_skills}" | grep -qxF "${skill_name}"
 }
 
-remove_project_skills() {
+remove_repo_managed_skills() {
     local removed_count=0
     local preserved_count=0
     local source_skills
-    source_skills="$(build_source_skill_list)"
+    source_skills="$(list_repo_skills)"
 
     if [ ! -d "${SKILLS_DIR}" ]; then
         return 0
@@ -59,16 +59,16 @@ remove_project_skills() {
     printf "Scanning existing skills...\n"
 
     for skill_dir in "${SKILLS_DIR}"*/; do
-        if [ ! -d "${skill_dir}" ]; then
+        if [ ! -d "${skill_dir}" ] && [ ! -L "${skill_dir}" ]; then
             continue
         fi
 
         local skill_name
         skill_name="$(basename "${skill_dir}")"
 
-        if is_project_skill "${skill_name}" "${source_skills}"; then
-            printf "  Removing project skill: %s\n" "${skill_name}"
-            rm -rf "${skill_dir}"
+        if is_repo_managed_skill "${skill_name}" "${source_skills}"; then
+            printf "  Removing repo skill: %s\n" "${skill_name}"
+            rm -f "${skill_dir}"
             removed_count=$((removed_count + 1))
         else
             printf "  Preserving user skill: %s\n" "${skill_name}"
@@ -76,25 +76,25 @@ remove_project_skills() {
         fi
     done
 
-    printf "Removed %d project skill(s), preserved %d user skill(s)\n" "${removed_count}" "${preserved_count}"
+    printf "Removed %d repo skill(s), preserved %d user skill(s)\n" "${removed_count}" "${preserved_count}"
     return 0
 }
 
-install_project_skills() {
+symlink_repo_skills() {
     local installed_count=0
 
-    printf "Installing project skills from %s...\n" "${SKILL_SOURCE}"
+    printf "Installing repo skills from %s...\n" "${SKILL_SOURCE}"
 
     while IFS= read -r source_dir; do
         local skill_name
         skill_name="$(basename "${source_dir}")"
 
-        cp -R "${source_dir}" "${SKILLS_DIR}${skill_name}"
+        ln -s "${source_dir}" "${SKILLS_DIR}${skill_name}"
         printf "  Installed: %s\n" "${skill_name}"
         installed_count=$((installed_count + 1))
     done < <(find "${SKILL_SOURCE}" -mindepth 1 -maxdepth 1 -type d)
 
-    printf "Installed %d project skill(s)\n" "${installed_count}"
+    printf "Installed %d repo skill(s)\n" "${installed_count}"
     return 0
 }
 
@@ -108,13 +108,13 @@ install_skills() {
         mkdir -p "${SKILLS_DIR}"
     fi
 
-    if ! remove_project_skills; then
-        printf "ERROR: failed to remove project skills\n" >&2
+    if ! remove_repo_managed_skills; then
+        printf "ERROR: failed to remove repo skills\n" >&2
         return 1
     fi
 
-    if ! install_project_skills; then
-        printf "ERROR: failed to install project skills\n" >&2
+    if ! symlink_repo_skills; then
+        printf "ERROR: failed to install repo skills\n" >&2
         return 1
     fi
 
