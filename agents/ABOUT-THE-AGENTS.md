@@ -12,99 +12,13 @@ The agent ecosystem is organized with **Main Claude as the coordinator** that co
 - **Composability**: Agents can be used independently or orchestrated together
 - **Maintainability**: Updates to one agent don't affect others
 
-## Project Agents vs User Agents
-
-This repository provides **project agents** - specialized development agents that work together as a coordinated ecosystem. You can also create your own **user agents** in `~/.claude/agents/` for personal workflows.
-
-### Key Differences
-
-**Project Agents**:
-
-- Provided by this repository
-- Designed to work together as a cohesive system
-- Located in `agents/` subdirectories (e.g., `agents/agnostic/`, `agents/go/`)
-- Updated when you run `setup/scripts/01-install-agents.sh`
-
-**User Agents**:
-
-- Created by you for personal workflows
-- Stored directly in `~/.claude/agents/`
-- Use unique filenames that don't match any project agent filenames
-- Preserved during project agent updates
-
-### Safe Installation
-
-The installation script (`setup/scripts/01-install-agents.sh`) identifies project agents by matching filenames against the source `agents/` directory:
-
-1. **Builds source list** - Finds all `.md` files in `agents/` subdirectories
-2. **Scans existing agents** - Checks each agent in `~/.claude/agents/` against the source list
-3. **Preserves user agents** - Keeps agents whose filenames don't match any project agent
-4. **Updates project agents** - Replaces agents whose filenames match the source
-5. **Reports changes** - Shows what was updated vs preserved
-
-**Example output**:
-
-```bash
-Scanning existing agents...
-  Removing project agent: api-architect-agent.md
-  Removing project agent: go-software-agent.md
-  Preserving user agent: my-custom-workflow.md
-  Preserving user agent: personal-helper.md
-Removed 2 project agent(s), preserved 2 user agent(s)
-```
-
-### Creating Personal Agents
-
-You can create personal agents that won't be affected by project updates. Just use a filename that doesn't match any project agent:
-
-1. **Create agent file** in `~/.claude/agents/my-agent.md`
-2. **Add frontmatter**:
-
-```yaml
----
-name: my-custom-agent
-description: My personal workflow assistant
-model: inherit
-tools:
----
-
-# My Custom Agent
-
-Your agent instructions here...
-```
-
-3. **Run install script** - Your agent will be preserved:
-
-```bash
-./scripts/01-install-agents.sh
-# Output: Preserving user agent: my-custom-agent.md
-```
-
-### Agent Metadata Structure
-
-Every project agent includes these frontmatter fields:
-
-```yaml
----
-name: agent-name                          # Unique identifier
-description: Brief description            # What the agent does
-model: opus                               # Model to use
-memory: user                              # Memory mode
-mcpServers:                               # MCP server connections (optional)
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
-tools:                                    # Tool restrictions (optional)
----
-```
-
 ## Agent Hierarchy
 
 ```mermaid
 graph TD
 User[User Request] --> Main[Main Claude<br/>Coordinator]
 
-    Main --> SoftArch[software-architect<br/>Language-Agnostic<br/>Architecture]
+    Main --> SoftArch[solution-architect<br/>Language-Agnostic<br/>Architecture]
 
     SoftArch --> LangArch[Language-Specific<br/>Architects]
 
@@ -145,183 +59,19 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 
 ```
 
-## Agent Roles
-
-### Software-architect
-
-**Role**: Language-agnostic architecture consultant (not coordinator)
-**Color**: Purple
-**Responsibilities**:
-
-- **Gather and clarify requirements** - Ask clarifying questions to understand what needs to be built
-- **Analyze existing projects** - Understand current language, infrastructure, CI/CD, tests, constraints
-- **Design high-level architecture** - API styles (REST/GraphQL/gRPC), deployment strategies, platform recommendations
-- **Explain tradeoffs** - Present options with pros/cons
-- **Hand off to language architect** - Once approved, specify which language architect should translate to implementation plan
-
-**When to use**: When you have a **business need or idea** that needs architectural guidance, especially for new projects or when language/platform choice is open.
-
-**Input**: Natural language requirements, user stories, business needs, existing project context
-**Output**: High-level architecture recommendations with language architect hand-off
-**Next**: Language-specific architect (go-architect) receives approved architecture
-
-### Language Architects (currently: go-architect)
-
-**Role**: Language-specific implementation architect (receives hand-offs from software-architect)
-**Color**: Purple
-**Responsibilities**:
-
-- **Receive high-level architecture** - From software-architect or work directly on language-specific projects
-- **Translate to language implementation plan** - Specific frameworks and libraries for the target language
-- **Design project structure** - Package/module layout, domain organization
-- **Design CLI architectures** - Command structure, configuration patterns, output formats (if applicable)
-- **Choose language-specific patterns** - Interface design, dependency injection, testing approaches
-- **Specify tooling** - Code generation, linting, build tools
-- **Return detailed plan to Main Claude** - Ready for specialist delegation
-
-**When to use**:
-
-- After software-architect approves high-level architecture
-- Directly for language-specific technical decisions in existing projects
-- For CLI tool design
-
-**Input**: High-level architecture from software-architect OR direct language-specific requirements
-**Output**: Detailed implementation plan with frameworks, structure, patterns, CLI design
-**Next**: Main Claude creates plan with TodoWrite, delegates to specialists
-
-### API-Architect
-
-**Role**: Language-agnostic API specification designer
-**Color**: Orange
-**Responsibilities**:
-
-- **Choose appropriate API style** - REST, GraphQL, gRPC, or hybrid
-- **Design OpenAPI 3.x specifications** - Complete REST API specs with auth, pagination
-- **Design GraphQL schemas** - Queries, mutations, subscriptions, federation
-- **Design Protocol Buffer services** - gRPC with unary and streaming RPCs
-- **Create language-agnostic specifications** - Ready for any language's code generation
-
-**When to use**: When you need API specifications (REST/GraphQL/gRPC). Designs the contract, language architects choose generators.
-
-**Input**: Requirements from software-architect or go-architect
-**Output**: Complete API specification (OpenAPI YAML, GraphQL schema, or .proto files)
-**Next**: Language architects choose generators (oapi-codegen, gqlgen, buf), engineers implement
-
-### Software-Engineer (go-software, python-software, dotnet-software, react-software, shell-script)
-
-**Role**: Language-specific implementation specialist
-**Color**: Green
-**Responsibilities**:
-
-- Implement business logic and service layers
-- Create API handlers/resolvers from specs
-- Implement repositories and data access
-- Refactor and optimize code
-- Design package/module structures
-- Write unit and integration tests
-
-**When to use**: After API/CLI specs are designed, for implementation work.
-
-### E2E-Test-Engineer (go-e2e-test, bats-test)
-
-**Role**: End-to-end test specialist
-**Color**: Green/Cyan
-**Responsibilities**:
-
-- Create black-box E2E tests for APIs and CLIs
-- Validate APIs against OpenAPI/GraphQL/gRPC specs
-- Test CLI commands from user perspective
-- Test all documented behavior
-- Validate success and error scenarios
-- Test shell scripts with proper isolation (BATS)
-
-**When to use**: After implementation, to validate user-facing behavior of applications and scripts.
-
-### Data-Architect
-
-**Role**: Schema design and data modeling consultant
-**Color**: Orange
-**Responsibilities**:
-
-- Design database schemas (PostgreSQL, Neo4j)
-- Define entity relationships and constraints
-- Create schema documentation using standardized output format
-- Hand off to data-engineer for implementation
-
-**When to use**: When you need database schema design, data modeling, or entity relationship planning.
-
-### Data-Engineer
-
-**Role**: Database implementation specialist
-**Color**: Green
-**Responsibilities**:
-
-- Write SQL migrations (PostgreSQL)
-- Write Cypher schema and queries (Neo4j)
-- Implement schemas designed by data-architect
-- Create pgvector configurations for embedding storage
-
-**When to use**: After data-architect designs the schema, for SQL/Cypher implementation.
-
-### Code-Review-Agent
-
-**Role**: Code review and pattern compliance specialist
-**Color**: Red
-**Responsibilities**:
-
-- Review code against Cognee patterns
-- Check for best practice violations
-- Identify security, performance, and testing gaps
-- Participate in 3-agent parallel code review (with software-architect and go-architect)
-
-**When to use**: For code reviews via the `/code-review` skill.
-
-### Documentation Layer
-
-#### documentation-engineer
-
-**Role**: Project documentation specialist
-**Color**: Gray
-**Responsibilities**:
-
-- Create and maintain README files
-- Write comprehensive CHANGELOG entries
-- Create user guides and tutorials
-- Document API endpoints and CLI commands
-- Follow documentation best practices
-- Ensure documentation consistency
-
-**When to use**: For creating or updating project documentation.
-
-### Deployment Layer
-
-#### devops-engineer (currently: go-devops)
-
-**Role**: Deployment and CI/CD specialist
-**Color**: Blue
-**Responsibilities**:
-
-- Create Dockerfiles and multi-stage builds
-- Design Kubernetes manifests and Helm charts
-- Implement CI/CD pipelines (GitHub Actions, Azure DevOps)
-- Configure health checks and monitoring
-- Set up staging and production environments
-
-**When to use**: For containerization, orchestration, and CI/CD setup.
-
 ## Requirements Gathering Phase
 
-**When you have a business need**, Main Claude consults software-architect for architectural guidance:
+**When you have a business need**, Main Claude consults solution-architect for architectural guidance:
 
 ```mermaid
 sequenceDiagram
 participant User
 participant Main as Main Claude
-participant SoftArch as software-architect
+participant SoftArch as solution-architect
 participant LangArch as language-architect
 
     User->>Main: "I need to build something for my users"
-    Main->>SoftArch: Consults software-architect
+    Main->>SoftArch: Consults solution-architect
 
     Note over SoftArch: Asks clarifying questions
 
@@ -358,9 +108,9 @@ participant LangArch as language-architect
 
 **Key Point**: You don't need formal specs or technical documents upfront. Here's how it works:
 
-1. **Main Claude consults software-architect** for high-level architecture recommendations
-2. **software-architect asks questions** to understand business needs and constraints
-3. **software-architect recommends high-level architecture** (API style, platform, deployment)
+1. **Main Claude consults solution-architect** for high-level architecture recommendations
+2. **solution-architect asks questions** to understand business needs and constraints
+3. **solution-architect recommends high-level architecture** (API style, platform, deployment)
 4. **User approves** the high-level architecture
 5. **Main Claude delegates to language-specific architect** (go-architect, etc.)
 6. **Language architect creates detailed implementation plan** (specific frameworks, structure, patterns)
@@ -383,7 +133,7 @@ participant LangArch as language-architect
 sequenceDiagram
 participant User
 participant Main as Main Claude
-participant SoftArch as software-architect
+participant SoftArch as solution-architect
 participant LangArch as language-architect
 participant APIArch as api-architect
 participant Eng as software-engineer
@@ -423,7 +173,7 @@ participant DevOps as devops-engineer
 sequenceDiagram
 participant User
 participant Main as Main Claude
-participant SoftArch as software-architect
+participant SoftArch as solution-architect
 participant LangArch as language-architect
 participant Eng as software-engineer
 participant E2E as e2e-test-engineer
@@ -458,7 +208,7 @@ participant E2E as e2e-test-engineer
 sequenceDiagram
 participant User
 participant Main as Main Claude
-participant SoftArch as software-architect
+participant SoftArch as solution-architect
 participant LangArch as language-architect
 participant APIArch as api-architect
 participant Eng as software-engineer
@@ -524,7 +274,7 @@ participant E2E as e2e-test-engineer
 sequenceDiagram
 participant User
 participant Main as Main Claude
-participant SoftArch as software-architect
+participant SoftArch as solution-architect
 participant LangArch as language-architect
 participant Eng as software-engineer
 participant E2E as e2e-test-engineer
@@ -561,7 +311,7 @@ Architecture and specialized agents query the Cognee knowledge graph for pattern
 ```mermaid
 graph LR
 subgraph "Specialized Agents"
-SoftArch[software-architect]
+SoftArch[solution-architect]
 LangArch[language-architect]
 APIArch[api-architect]
 SoftEng[software-engineer]
@@ -639,12 +389,12 @@ Start -->|No| CLI[language-architect<br/>for CLI design only]
 ```mermaid
 graph TD
 Start[Task Type?]
-Start -->|New project<br/>Platform choice open<br/>Brownfield analysis| SoftArch[Main Claude consults<br/>software-architect]
+Start -->|New project<br/>Platform choice open<br/>Brownfield analysis| SoftArch[Main Claude consults<br/>solution-architect]
 Start -->|Language-specific<br/>decisions<br/>Implementation planning| LangArch[Main Claude consults<br/>language-architect]
 Start -->|Single component<br/>Known tech stack| Direct{What needs design?}
 Start -->|Simple<br/>Implementation only| Eng[Main Claude uses<br/>software-engineer directly]
 
-    SoftArch --> SoftRec[software-architect returns<br/>high-level architecture]
+    SoftArch --> SoftRec[solution-architect returns<br/>high-level architecture]
     SoftRec --> HandOff[Hand off to language architect]
     HandOff --> LangRec[Language architect returns<br/>detailed implementation plan]
     LangRec --> Plan[Main Claude creates plan<br/>Delegates to specialists]
@@ -690,9 +440,9 @@ Start -->|Simple<br/>Implementation only| Eng[Main Claude uses<br/>software-engi
 
 **For new projects or platform decisions**:
 
-- Consult software-architect for high-level architecture
-- software-architect analyzes existing projects (brownfield)
-- software-architect hands off to language-specific architect
+- Consult solution-architect for high-level architecture
+- solution-architect analyzes existing projects (brownfield)
+- solution-architect hands off to language-specific architect
 
 **For existing language-specific projects**:
 
@@ -704,7 +454,7 @@ Start -->|Simple<br/>Implementation only| Eng[Main Claude uses<br/>software-engi
 
 When working with brownfield projects:
 
-- software-architect scans codebase to understand what exists
+- solution-architect scans codebase to understand what exists
 - Preserve working CI/CD, infrastructure, and patterns
 - Incremental improvements over rewrites
 - Migration paths for necessary changes
@@ -746,7 +496,7 @@ Use E2E tests to validate implementation:
 
 Main Claude follows this order:
 
-1. Consult software-architect (new projects/platform decisions) OR language-architect (language-specific)
+1. Consult solution-architect (new projects/platform decisions) OR language-architect (language-specific)
 2. Language-architect creates detailed implementation plan including CLI design if applicable
 3. Design API specs (delegate to api-architect if API project)
 4. Generate code from specs (language-architect chooses generators)
@@ -763,11 +513,11 @@ Here's how to build a complete SaaS API project using the agent ecosystem:
 # 1. User starts with a business need (no technical spec required)
 User: "I need to build a SaaS application for managing teams and projects."
 
-# 2. Main Claude consults software-architect
-Main Claude: [Uses Task tool with software-architect]
+# 2. Main Claude consults solution-architect
+Main Claude: [Uses Task tool with solution-architect]
 
-# 3. software-architect asks clarifying questions
-software-architect: "Let me understand your requirements:
+# 3. solution-architect asks clarifying questions
+solution-architect: "Let me understand your requirements:
   - Who are the users? (web, mobile, internal systems?)
   - What operations do you need? (CRUD, real-time updates?)
   - How many users/what scale?
@@ -777,8 +527,8 @@ User: "Web and mobile clients. Users and organizations with role-based access.
        Real-time notifications when projects update. Start with 1000 orgs,
        plan to scale. Deploy to Kubernetes on AWS."
 
-# 4. software-architect returns recommendations and hands off
-software-architect: "Architecture Recommendation:
+# 4. solution-architect returns recommendations and hands off
+solution-architect: "Architecture Recommendation:
   - GraphQL API (multiple clients, real-time subscriptions)
   - gRPC for internal microservices (high performance)
   - Ops CLI for management
@@ -821,7 +571,7 @@ Main Claude: [Uses TodoWrite to create phased plan]
 
 # Result: Complete production-ready SaaS API
 #   - User provided business needs in natural language
-#   - software-architect created high-level architecture
+#   - solution-architect created high-level architecture
 #   - language-architect translated to detailed implementation plan
 #   - Main Claude coordinated implementation
 #   - Specialists designed and implemented each piece
@@ -832,7 +582,7 @@ Main Claude: [Uses TodoWrite to create phased plan]
 
 For quick visual identification in Claude Code:
 
-- **Purple** - software-architect (language-agnostic), language-architect (language-specific implementation)
+- **Purple** - solution-architect (language-agnostic), language-architect (language-specific implementation)
 - **Orange** - api-architect (REST/GraphQL/gRPC specifications), data-architect (schema design)
 - **Green** - software-engineer (implementation for all languages), e2e-test-engineer (testing), data-engineer (SQL/Cypher)
 - **Red** - code-review-agent (pattern compliance and code review)
@@ -844,7 +594,7 @@ For quick visual identification in Claude Code:
 The agent ecosystem provides:
 
 - **Main Claude coordinates** - Creates plans with TodoWrite, delegates with Task tool, tracks progress
-- **software-architect consults** - Translates business needs to high-level architecture recommendations
+- **solution-architect consults** - Translates business needs to high-level architecture recommendations
 - **language-architect plans** - Translates high-level architecture to detailed implementation plans
 - **No formal specs required** - Start with natural language, architects ask clarifying questions
 - **Multi-language support** - Same workflow for Go, Python, .NET, and shell scripts
@@ -856,8 +606,8 @@ The agent ecosystem provides:
 
 **Getting Started**:
 
-- **Complex projects**: Main Claude consults software-architect for high-level architecture, then language-architect for implementation plan, then coordinates specialists
+- **Complex projects**: Main Claude consults solution-architect for high-level architecture, then language-architect for implementation plan, then coordinates specialists
 - **Language-specific projects**: Main Claude consults language-architect directly, then coordinates specialists
 - **Single component**: Main Claude delegates directly to specialist (api-architect, software-engineer, etc.)
 - **Simple tasks**: Main Claude uses software-engineer directly for implementation
-- **Don't have architecture?** Main Claude consults software-architect (language-agnostic) or language-architect (language-specific) to create it through conversation
+- **Don't have architecture?** Main Claude consults solution-architect (language-agnostic) or language-architect (language-specific) to create it through conversation

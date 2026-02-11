@@ -16,7 +16,7 @@ Agents are invoked by Main Claude through the Task tool based on the type of wor
 User: "Build a user management REST API in Go"
 
 Main Claude:
-  1. Consults software-architect-agent for high-level architecture
+  1. Consults solution-architect-agent for high-level architecture
   2. Delegates to go-architect-agent for implementation planning
   3. Sends API spec work to api-architect-agent
   4. Hands implementation to go-software-agent
@@ -42,7 +42,7 @@ User: "Update the project README"
 Skills are multi-agent orchestration workflows invoked with slash commands:
 
 - `/shell-script` -- Creates a production-grade shell script with automatic BATS test generation and an iterative fix loop until all tests pass.
-- `/code-review` -- Runs a 3-agent parallel code review (code-review-agent + software-architect-agent + go-architect-agent) with synthesis and reconciliation.
+- `/code-review` -- Runs a 3-agent parallel code review (code-review-agent + solution-architect-agent + go-architect-agent) with synthesis and reconciliation.
 
 ```text
 User: /shell-script Create a backup script for Docker volumes
@@ -55,7 +55,7 @@ User: /code-review --diff
 
 | Task type                                   | Specialist agent           |
 | ------------------------------------------- | -------------------------- |
-| System architecture (language-agnostic)     | `software-architect-agent` |
+| System architecture (language-agnostic)     | `solution-architect-agent` |
 | Go architecture and implementation planning | `go-architect-agent`       |
 | API specification (REST, GraphQL, gRPC)     | `api-architect-agent`      |
 | Database schema design                      | `data-architect-agent`     |
@@ -79,7 +79,7 @@ Main Claude is the coordinator. It never writes code or designs systems itself. 
 
 **Specialist agents** are organized by role:
 
-- **Architects** (software-architect, go-architect, api-architect, data-architect) design systems and return recommendations to Main Claude. They are consultants, not coordinators.
+- **Architects** (solution-architect, go-architect, api-architect, data-architect) design systems and return recommendations to Main Claude. They are consultants, not coordinators.
 - **Engineers** (go-software, python-software, dotnet-software, react-software, shell-script, data-engineer) implement services, APIs, CLIs, infrastructure, and database migrations.
 - **Test engineers** (go-e2e-test, bats-test) create comprehensive test coverage.
 - **DevOps engineers** (go-devops) handle containerization, orchestration, and CI/CD.

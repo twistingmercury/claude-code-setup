@@ -4,10 +4,12 @@ description: Expert React and TypeScript engineer for building, refactoring, and
 model: sonnet
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   # Read access
   - "Read(**/*.ts)"
   - "Read(**/*.tsx)"

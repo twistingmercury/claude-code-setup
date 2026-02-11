@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: Orchestrates a 3-agent parallel code review combining pattern compliance, Go conventions, and architectural analysis.
-compatibility: Requires code-review-agent, software-architect-agent, go-architect-agent
+compatibility: Requires code-review-agent, solution-architect-agent, go-architect-agent
 metadata:
   author: twistingmercury@proton.me
   version: "1.0"
@@ -51,7 +51,7 @@ Launch all three agents simultaneously using the Task tool:
    - Pattern compliance, linting, best practices
    - Prompt: Provide the file paths and ask it to review against Cognee patterns, run linters, and return structured findings
 
-2. **`software-architect-agent`** (strategic)
+2. **`solution-architect-agent`** (strategic)
    - Architectural concerns, design coherence
    - Prompt: Provide the file paths and ask it to evaluate architectural consistency, separation of concerns, and design coherence
 
@@ -106,7 +106,7 @@ After user approves specific fixes, delegate to appropriate specialists:
 
 ## Key principles
 
-- Three perspectives: tactical (code-review) + Go-specific (go-architect) + strategic (software-architect)
+- Three perspectives: tactical (code-review) + Go-specific (go-architect) + strategic (solution-architect)
 - Agents reconcile disagreements BEFORE presenting to user
 - User is involved in resolution decisions, not just notified
 - Documentation updated to capture learnings from review

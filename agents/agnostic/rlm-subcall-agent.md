@@ -4,10 +4,12 @@ description: Acts as the RLM sub-LLM (llm_query). Given a chunk of context (usua
 model: haiku
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   - "Read(**/*)"
   - "Glob(**/*)"
 ---

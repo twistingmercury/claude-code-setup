@@ -17,7 +17,7 @@
 | "design/create **API spec**"         | `api-architect-agent`                               | Don't design APIs              |
 | "write/create **documentation**"     | `documentation-agent`                               | Don't write docs               |
 | "review/update **documentation**"    | `documentation-agent`                               | Don't review/edit docs         |
-| "design **architecture**"            | `software-architect-agent`                          | Don't design systems           |
+| "design **architecture**"            | `solution-architect-agent`                          | Don't design systems           |
 | "**Go** architecture/design"         | `go-architect-agent`                                | Don't plan Go structure        |
 | "**DevOps**/Docker/CI"               | `go-devops-agent`                                   | Don't write deployment configs |
 | "design **data schema/model**"       | `data-architect-agent`                              | Don't design schemas           |
@@ -50,16 +50,16 @@ User request → Identify task type → Check table → Delegate immediately
 
 ### Architects and Reviewers are Consultants (Not Coordinators)
 
-- `software-architect-agent`, `go-architect-agent`, `data-architect-agent`, and `code-review-agent` **return recommendations** to Main Claude
+- `solution-architect-agent`, `go-architect-agent`, `data-architect-agent`, and `code-review-agent` **return recommendations** to Main Claude
 - Main Claude creates coordination plans (TodoWrite) and delegates to specialists
 - Architects and reviewers do not coordinate implementation - they consult only
 
 ### Delegation Patterns
 
-1. **Complex/new projects**: Main Claude → `software-architect-agent` → recommendations → Main Claude → `go-architect-agent` → plan → specialists
+1. **Complex/new projects**: Main Claude → `solution-architect-agent` → recommendations → Main Claude → `go-architect-agent` → plan → specialists
 2. **Go-specific projects**: Main Claude → `go-architect-agent` → plan → specialists
 3. **Data schema/database work**: Main Claude → `data-architect-agent` → schema design → `data-engineer-agent` → migrations → `go-software-agent` → repositories
-4. **Code review**: Run the `/code-review` skill (3-agent parallel review: `code-review-agent` + `go-architect-agent` + `software-architect-agent`)
+4. **Code review**: Run the `/code-review` skill (3-agent parallel review: `code-review-agent` + `go-architect-agent` + `solution-architect-agent`)
 5. **Documentation updates**: Main Claude → `documentation-agent` (for README, CHANGELOG, guides)
 6. **Single component**: Main Claude → specialist directly (use table above)
 7. **Simple implementation**: Main Claude → appropriate specialist (use table above)

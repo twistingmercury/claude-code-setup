@@ -4,10 +4,12 @@ description: Language-agnostic data engineer. Writes SQL migrations, Cypher quer
 model: opus
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   # Read access
   - "Read(**/*.sql)"
   - "Read(**/*.cypher)"

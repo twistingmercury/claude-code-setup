@@ -4,10 +4,12 @@ description: Creates comprehensive black-box E2E tests in Go that validate user-
 model: opus
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   # Read access
   - "Read(**/*.sh)"
   - "Read(**/*.json)"

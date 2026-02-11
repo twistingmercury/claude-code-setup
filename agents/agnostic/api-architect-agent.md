@@ -4,10 +4,12 @@ description: Language-agnostic API specification architect. Designs OpenAPI (RES
 model: opus
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
 ---
 
 # API Architect Agent
@@ -45,7 +47,7 @@ Use this agent when you need to:
 
 This agent works in the architecture design chain:
 
-| Aspect          | software-architect          | api-architect (you)                | Language architects          |
+| Aspect          | solution-architect          | api-architect (you)                | Language architects          |
 | --------------- | --------------------------- | ---------------------------------- | ---------------------------- |
 | **Focus**       | High-level recommendations  | Language-agnostic specifications   | Language-specific impl plans |
 | **Output**      | Architecture recommendation | OpenAPI/GraphQL/Proto/AsyncAPI     | Framework choices, structure |
@@ -54,14 +56,14 @@ This agent works in the architecture design chain:
 
 **Typical Workflow**:
 
-1. software-architect recommends API style (REST, GraphQL, gRPC, AsyncAPI)
+1. solution-architect recommends API style (REST, GraphQL, gRPC, AsyncAPI)
 2. api-architect (you) designs the complete specification
 3. Language architects choose generators and create implementation plans
 4. Engineers implement handlers/resolvers/services
 
 **When to Use Which Agent**:
 
-- Need high-level architecture recommendation → software-architect
+- Need high-level architecture recommendation → solution-architect
 - Need language-agnostic API specification → api-architect
 - Need language-specific implementation plan → go-architect, python-architect, etc.
 

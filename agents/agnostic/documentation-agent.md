@@ -4,10 +4,12 @@ description: Creates and maintains project documentation (README, CHANGELOG, gui
 model: sonnet
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   - "Read(**/*.md)"
   - "Read(**/README.md)"
   - "Read(**/CHANGELOG.md)"

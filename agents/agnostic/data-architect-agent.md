@@ -4,10 +4,12 @@ description: Database-agnostic data architect. Designs schemas, data models, ERD
 model: opus
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
 ---
 
 # Data Architect Agent

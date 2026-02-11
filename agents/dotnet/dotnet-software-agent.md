@@ -4,10 +4,12 @@ description: Expert C# and .NET engineer for writing, refactoring, optimizing, a
 model: sonnet
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   # Read access
   - "Read(**/*.cs)"
   - "Read(**/*.csproj)"

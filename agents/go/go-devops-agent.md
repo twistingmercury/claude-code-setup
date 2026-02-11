@@ -4,10 +4,12 @@ description: Expert in Go application deployment, containerization, CI/CD pipeli
 model: sonnet
 memory: user
 mcpServers:
-  context7:
-    command: npx
-    args: ["-y", "@upstash/context7-mcp"]
+  - cognee
+  - context7:
+      command: npx
+      args: ["-y", "@upstash/context7-mcp"]
 tools:
+  - "mcp__cognee__search"
   - "Read(**/*.sh)"
   - "Read(**/*.bats)"
   - "Read(**/*.md)"
