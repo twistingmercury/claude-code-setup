@@ -46,6 +46,8 @@ All patterns MUST include these fields in YAML frontmatter:
   - `shell` - Shell script (bash, sh)
   - `typescript` - TypeScript/JavaScript
   - `react` - React specific (extends typescript)
+  - `sql` - SQL specific (PostgreSQL migrations, queries)
+  - `cypher` - Cypher specific (Neo4j queries, schemas)
 - **Example**: `"go"`, `"agnostic"`
 - **Rules**:
   - Use lowercase
@@ -63,6 +65,7 @@ All patterns MUST include these fields in YAML frontmatter:
   - `testing` - Testing patterns (unit, integration, e2e)
   - `devops` - Infrastructure, CI/CD, containerization
   - `cli` - Command-line interface patterns
+  - `data-design` - Database schema design and data modeling
   - `documentation` - Documentation patterns
 - **Example**: `"api-design"`, `"backend"`
 - **Rules**:
@@ -240,41 +243,69 @@ patterns/
   api-patterns/
     design/                    # language: agnostic, domain: api-design
       rest-api-specification-pattern.md
+      rest-api-authentication-patterns.md
       graphql-schema-pattern.md
       grpc-service-definition-pattern.md
+      asyncapi-specification-pattern.md
     go/                        # language: go, domain: backend
-      rest-api-implementation-go.md
-      graphql-implementation-go.md
+      rest-api-implementation-gin.md
+      rest-api-authentication-gin.md
+      graphql-implementation-gqlgen.md
       grpc-implementation-go.md
-    python/                    # language: python, domain: backend
-      rest-api-implementation-python.md
-      graphql-implementation-python.md
+      asyncapi-implementation-go.md
+    openapi/                   # language: agnostic, domain: api-design
+      rest-api-specification-pattern.md
+      authentication-patterns.md
+    graphql/                   # language: agnostic, domain: api-design
+      schema-pattern.md
+      federation-pattern.md
+    grpc/                      # language: agnostic, domain: api-design
+      service-definition-pattern.md
+      streaming-patterns.md
 
-  testing-patterns/
-    go/                        # language: go, domain: testing
-      rest-api-testing-go.md
-      graphql-testing-go.md
-    python/                    # language: python, domain: testing
-      rest-api-testing-python.md
-    shell/                     # language: shell, domain: testing
-      bats-test-structure.md
-      bats-assertions.md
+  e2e-patterns/                # language: go, domain: testing
+    cli-testing-pattern.md
+    rest-api-testing-pattern.md
+    graphql-testing-pattern.md
+    grpc-testing-pattern.md
 
-  cli-patterns/
-    design/                    # language: agnostic, domain: cli
-      cli-architecture-pattern.md
-    go/                        # language: go, domain: cli
-      cobra-root-command-pattern.md
-      cobra-subcommand-pattern.md
+  bats-patterns/               # language: shell, domain: testing
+    bats-test-structure.md
+    bats-assertions.md
+    bats-test-isolation.md
+    bats-docker-testing.md
 
-  devops-patterns/
-    go/                        # language: go, domain: devops
-      service-dockerfile-go.md
-      service-build-script-go.md
-    python/                    # language: python, domain: devops
-      service-dockerfile-python.md
-    agnostic/                  # language: agnostic, domain: devops
-      azure-devops-pipeline-pattern.md
+  cli-patterns/                # language: go, domain: cli
+    cobra-root-command-pattern.md
+    cobra-subcommand-pattern.md
+    cobra-configuration-pattern.md
+    cobra-domain-architecture-pattern.md
+
+  devops-patterns/             # language: go, domain: devops
+    service-dockerfile-pattern.md
+    cli-dockerfile-pattern.md
+    service-build-script-pattern.md
+    cli-build-orchestration-pattern.md
+    library-build-pattern.md
+    azure-devops-pipeline-pattern.md
+    github-actions-ci-pattern.md
+    github-actions-cd-pattern.md
+
+  data-patterns/
+    design/                    # language: agnostic, domain: data-design
+      schema-design-output-pattern.md
+    postgresql/                # language: sql, domain: data-design
+      sql-migration-pattern.md
+      soft-delete-pattern.md
+      audit-columns-pattern.md
+      jsonb-validation-pattern.md
+    pgvector/                  # language: sql, domain: data-design
+      pgvector-setup-pattern.md
+      similarity-search-pattern.md
+    neo4j/                     # language: cypher, domain: data-design
+      cypher-schema-pattern.md
+      cypher-query-pattern.md
+      neo4j-ce-ee-migration-pattern.md
 ```
 
 ## Query Examples

@@ -3,11 +3,11 @@
 set -e
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-WORKBENCH="${WORKBENCH:-$(cd "${SCRIPTS}/.." && pwd)}"
-PROJ_ROOT="${PROJ_ROOT:-$(cd "${WORKBENCH}/.." && pwd)}"
+SETUP_DIR="${SETUP_DIR:-$(cd "${SCRIPTS}/.." && pwd)}"
+PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 
 # shellcheck source=../lib/print.sh
-. "${WORKBENCH}/lib/print.sh"
+. "${SETUP_DIR}/lib/print.sh"
 
 # Global variable declarations
 API_URL="${API_URL:-http://localhost:8000}"

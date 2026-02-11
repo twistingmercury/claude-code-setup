@@ -22,32 +22,32 @@ This repository provides **project agents** - specialized development agents tha
 
 - Provided by this repository
 - Designed to work together as a cohesive system
-- Located in `agents/`
-- Include `project_agent: team-agentic-setup` in frontmatter
-- Updated when you run `workbench/scripts/01-install-agents.sh`
+- Located in `agents/` subdirectories (e.g., `agents/agnostic/`, `agents/go/`)
+- Updated when you run `setup/scripts/01-install-agents.sh`
 
 **User Agents**:
 
 - Created by you for personal workflows
-- Stored in `~/.claude/agents/`
-- Should NOT include `project_agent` field
+- Stored directly in `~/.claude/agents/`
+- Use unique filenames that don't match any project agent filenames
 - Preserved during project agent updates
 
 ### Safe Installation
 
-The installation script (`workbench/scripts/01-install-agents.sh`) uses the `project_agent` metadata field to safely update project agents while preserving your personal agents:
+The installation script (`setup/scripts/01-install-agents.sh`) identifies project agents by matching filenames against the source `agents/` directory:
 
-1. **Scans existing agents** - Checks each agent's frontmatter for `project_agent: team-agentic-setup`
-2. **Preserves user agents** - Keeps agents without the project marker
-3. **Updates project agents** - Replaces only agents that match the project marker
-4. **Reports changes** - Shows what was updated vs preserved
+1. **Builds source list** - Finds all `.md` files in `agents/` subdirectories
+2. **Scans existing agents** - Checks each agent in `~/.claude/agents/` against the source list
+3. **Preserves user agents** - Keeps agents whose filenames don't match any project agent
+4. **Updates project agents** - Replaces agents whose filenames match the source
+5. **Reports changes** - Shows what was updated vs preserved
 
 **Example output**:
 
 ```bash
 Scanning existing agents...
-  Removing project agent: api-architect.md
-  Removing project agent: go-software-engineer.md
+  Removing project agent: api-architect-agent.md
+  Removing project agent: go-software-agent.md
   Preserving user agent: my-custom-workflow.md
   Preserving user agent: personal-helper.md
 Removed 2 project agent(s), preserved 2 user agent(s)
@@ -55,10 +55,10 @@ Removed 2 project agent(s), preserved 2 user agent(s)
 
 ### Creating Personal Agents
 
-You can create personal agents that won't be affected by project updates:
+You can create personal agents that won't be affected by project updates. Just use a filename that doesn't match any project agent:
 
 1. **Create agent file** in `~/.claude/agents/my-agent.md`
-2. **Add frontmatter** without `project_agent` field:
+2. **Add frontmatter**:
 
 ```yaml
 ---
@@ -76,7 +76,7 @@ Your agent instructions here...
 3. **Run install script** - Your agent will be preserved:
 
 ```bash
-./scripts/install-agents.sh
+./scripts/01-install-agents.sh
 # Output: Preserving user agent: my-custom-agent.md
 ```
 
@@ -88,8 +88,13 @@ Every project agent includes these frontmatter fields:
 ---
 name: agent-name                          # Unique identifier
 description: Brief description            # What the agent does
-model: inherit                            # Use default model
-tools:                                   # Tool restrictions (optional)
+model: opus                               # Model to use
+memory: user                              # Memory mode
+mcpServers:                               # MCP server connections (optional)
+  context7:
+    command: npx
+    args: ["-y", "@upstash/context7-mcp"]
+tools:                                    # Tool restrictions (optional)
 ---
 ```
 
@@ -103,18 +108,22 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 
     SoftArch --> LangArch[Language-Specific<br/>Architects]
 
-    LangArch --> LangSpecArch[Language Architects<br/>Go, Python, .NET]
+    LangArch --> LangSpecArch[Language Architects<br/>Go]
 
     Main --> APIArch[api-architect<br/>Language-Agnostic<br/>API Specs]
+    Main --> DataArch[data-architect<br/>Schema Design]
     Main --> Impl[Implementation]
     Main --> Test[Testing]
     Main --> DevOps[Deployment]
     Main --> Doc[Documentation]
+    Main --> Review[Code Review]
 
-    Impl --> SoftEng[software-engineer<br/>Go, Python, .NET, Shell]
-    Test --> E2EEng[e2e-test-engineer<br/>Go, Python, .NET, BATS]
-    DevOps --> DevOpsEng[devops-engineer<br/>Go, Python, .NET]
+    Impl --> SoftEng[software-engineer<br/>Go, Python, .NET, React, Shell]
+    Impl --> DataEng[data-engineer<br/>SQL, Cypher]
+    Test --> E2EEng[e2e-test-engineer<br/>Go, BATS]
+    DevOps --> DevOpsEng[devops-engineer<br/>Go]
     Doc --> DocEng[documentation-engineer]
+    Review --> CodeReview[code-review-agent]
 
     style Main fill:#2c3e50,stroke:#1a252f,color:#fff
     style SoftArch fill:#9b59b6,stroke:#8e44ad,color:#fff
@@ -125,10 +134,14 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
     style E2EEng fill:#27ae60,stroke:#229954,color:#fff
     style DevOpsEng fill:#3498db,stroke:#2980b9,color:#fff
     style DocEng fill:#95a5a6,stroke:#7f8c8d,color:#fff
+    style DataArch fill:#e67e22,stroke:#d35400,color:#fff
+    style DataEng fill:#27ae60,stroke:#229954,color:#fff
+    style CodeReview fill:#e74c3c,stroke:#c0392b,color:#fff
     style Impl fill:#34495e,stroke:#2c3e50,color:#fff
     style Test fill:#34495e,stroke:#2c3e50,color:#fff
     style DevOps fill:#34495e,stroke:#2c3e50,color:#fff
     style Doc fill:#34495e,stroke:#2c3e50,color:#fff
+    style Review fill:#34495e,stroke:#2c3e50,color:#fff
 
 ```
 
@@ -150,9 +163,9 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 
 **Input**: Natural language requirements, user stories, business needs, existing project context
 **Output**: High-level architecture recommendations with language architect hand-off
-**Next**: Language-specific architect (go-architect, python-architect, etc.) receives approved architecture
+**Next**: Language-specific architect (go-architect) receives approved architecture
 
-### Language Architects (go-architect, python-architect, dotnet-architect, etc.)
+### Language Architects (currently: go-architect)
 
 **Role**: Language-specific implementation architect (receives hand-offs from software-architect)
 **Color**: Purple
@@ -194,7 +207,7 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 **Output**: Complete API specification (OpenAPI YAML, GraphQL schema, or .proto files)
 **Next**: Language architects choose generators (oapi-codegen, gqlgen, buf), engineers implement
 
-### Software-Engineer (go-software-engineer, python-software-engineer, dotnet-software-engineer, shell-script-engineer, etc.)
+### Software-Engineer (go-software, python-software, dotnet-software, react-software, shell-script)
 
 **Role**: Language-specific implementation specialist
 **Color**: Green
@@ -209,7 +222,7 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 
 **When to use**: After API/CLI specs are designed, for implementation work.
 
-### E@E-Test-Engineer (go-e2e-test-engineer, python-e2e-test-engineer, dotnet-e2e-test-engineer, bats-test-engineer, etc.)
+### E2E-Test-Engineer (go-e2e-test, bats-test)
 
 **Role**: End-to-end test specialist
 **Color**: Green/Cyan
@@ -223,6 +236,45 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 - Test shell scripts with proper isolation (BATS)
 
 **When to use**: After implementation, to validate user-facing behavior of applications and scripts.
+
+### Data-Architect
+
+**Role**: Schema design and data modeling consultant
+**Color**: Orange
+**Responsibilities**:
+
+- Design database schemas (PostgreSQL, Neo4j)
+- Define entity relationships and constraints
+- Create schema documentation using standardized output format
+- Hand off to data-engineer for implementation
+
+**When to use**: When you need database schema design, data modeling, or entity relationship planning.
+
+### Data-Engineer
+
+**Role**: Database implementation specialist
+**Color**: Green
+**Responsibilities**:
+
+- Write SQL migrations (PostgreSQL)
+- Write Cypher schema and queries (Neo4j)
+- Implement schemas designed by data-architect
+- Create pgvector configurations for embedding storage
+
+**When to use**: After data-architect designs the schema, for SQL/Cypher implementation.
+
+### Code-Review-Agent
+
+**Role**: Code review and pattern compliance specialist
+**Color**: Red
+**Responsibilities**:
+
+- Review code against Cognee patterns
+- Check for best practice violations
+- Identify security, performance, and testing gaps
+- Participate in 3-agent parallel code review (with software-architect and go-architect)
+
+**When to use**: For code reviews via the `/code-review` skill.
 
 ### Documentation Layer
 
@@ -243,7 +295,7 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
 
 ### Deployment Layer
 
-#### devops-engineer (go-devops-engineer, python-devops-engineer, dotnet-devops-engineer)
+#### devops-engineer (currently: go-devops)
 
 **Role**: Deployment and CI/CD specialist
 **Color**: Blue
@@ -620,6 +672,18 @@ Start -->|Simple<br/>Implementation only| Eng[Main Claude uses<br/>software-engi
 
 ```
 
+### Utility Agents
+
+#### rlm-subcall
+
+**Role**: Recursive Language Model subagent for large-context processing
+**Responsibilities**:
+
+- Process chunks of large documents that exceed context limits
+- Support the RLM skill workflow for long-context tasks
+
+**When to use**: Invoked automatically by the `/rlm` skill; not typically used directly.
+
 ## Best Practices
 
 ### 1. Choose the Right Architect
@@ -769,8 +833,9 @@ Main Claude: [Uses TodoWrite to create phased plan]
 For quick visual identification in Claude Code:
 
 - **Purple** - software-architect (language-agnostic), language-architect (language-specific implementation)
-- **Orange** - api-architect (REST/GraphQL/gRPC specifications)
-- **Green** - software-engineer (implementation for all languages), e2e-test-engineer (testing)
+- **Orange** - api-architect (REST/GraphQL/gRPC specifications), data-architect (schema design)
+- **Green** - software-engineer (implementation for all languages), e2e-test-engineer (testing), data-engineer (SQL/Cypher)
+- **Red** - code-review-agent (pattern compliance and code review)
 - **Blue** - devops-engineer (deployment and CI/CD)
 - **Gray** - documentation-engineer (documentation)
 

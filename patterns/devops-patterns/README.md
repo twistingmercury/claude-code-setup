@@ -17,8 +17,11 @@ Each pattern file has:
 1. **service-dockerfile-pattern.md** - Multi-stage Dockerfile (Alpine → Scratch) for REST/gRPC services
 2. **cli-dockerfile-pattern.md** - Multi-platform CLI tool cross-compilation
 3. **azure-devops-pipeline-pattern.md** - Complete Azure DevOps pipeline YAML
-4. **service-build-script-pattern.md** - Comprehensive build automation script
-5. **library-build-pattern.md** - Containerized builds for Go libraries/packages (GitHub Actions)
+4. **github-actions-ci-pattern.md** - GitHub Actions CI pipeline for Go projects
+5. **github-actions-cd-pattern.md** - GitHub Actions CD pipeline for deployments
+6. **cli-build-orchestration-pattern.md** - CLI build orchestration and release automation
+7. **service-build-script-pattern.md** - Comprehensive build automation script
+8. **library-build-pattern.md** - Containerized builds for Go libraries/packages (GitHub Actions)
 
 ## Pattern Coverage
 
@@ -38,6 +41,8 @@ Each pattern file has:
 ### CI/CD
 
 - Azure DevOps pipeline configuration
+- GitHub Actions CI pipeline
+- GitHub Actions CD pipeline
 - ACR authentication and push
 - Test result publishing (JUnit XML)
 - Code coverage publishing (Cobertura XML)

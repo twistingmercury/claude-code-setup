@@ -1,12 +1,37 @@
 # API Architecture Patterns
 
-This directory has comprehensive patterns for designing RESTful, GraphQL, and gRPC APIs in Go projects.
+This directory has comprehensive patterns for designing RESTful, GraphQL, gRPC, and AsyncAPI APIs, with both language-agnostic design patterns and Go implementation patterns.
 
 ## Overview
 
 These patterns give you complete, production-ready templates that Claude Code agents can pull from Cognee when they're designing APIs.
 
 ## Pattern Categories
+
+### Design Patterns (`design/`)
+
+Language-agnostic API specification patterns:
+
+1. **REST API Specification Pattern** (`rest-api-specification-pattern.md`)
+   - Complete OpenAPI 3.1 CRUD spec with pagination, filtering, versioning
+
+2. **REST API Authentication Patterns** (`rest-api-authentication-patterns.md`)
+   - JWT, API keys, OAuth 2.0, OpenID Connect
+
+3. **GraphQL Schema Pattern** (`graphql-schema-pattern.md`)
+   - Schema-first design with queries, mutations, subscriptions
+
+4. **gRPC Service Definition Pattern** (`grpc-service-definition-pattern.md`)
+   - Protocol Buffer service definitions with all RPC types
+
+5. **AsyncAPI Specification Pattern** (`asyncapi-specification-pattern.md`)
+   - Event-driven API specifications for messaging patterns
+
+**When to use these:**
+
+- Designing API contracts before implementation
+- Creating language-agnostic specifications
+- Choosing between API styles
 
 ### OpenAPI Patterns (`openapi/`)
 
@@ -91,6 +116,30 @@ Protocol Buffer service definitions:
 - Real-time data streaming
 - High-performance APIs
 - Binary protocol requirements
+
+### Go Implementation Patterns (`go/`)
+
+Go-specific implementations of the design patterns:
+
+1. **REST API Implementation (Gin)** (`rest-api-implementation-gin.md`)
+   - Gin-based REST API server implementation
+
+2. **REST API Authentication (Gin)** (`rest-api-authentication-gin.md`)
+   - Authentication middleware for Gin REST APIs
+
+3. **GraphQL Implementation (gqlgen)** (`graphql-implementation-gqlgen.md`)
+   - gqlgen-based GraphQL server implementation
+
+4. **gRPC Implementation (Go)** (`grpc-implementation-go.md`)
+   - Go gRPC server and client implementation
+
+5. **AsyncAPI Implementation (Go)** (`asyncapi-implementation-go.md`)
+   - Go event-driven messaging implementation
+
+**When to use these:**
+
+- Implementing API servers in Go
+- Generating server/client code from API specs
 
 ## Cognee Integration
 

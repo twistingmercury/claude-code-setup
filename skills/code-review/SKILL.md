@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: Orchestrates a 3-agent parallel code review combining pattern compliance, Go conventions, and architectural analysis.
-compatibility: Requires code review agent, software architect agent
+compatibility: Requires code-review-agent, software-architect-agent, go-architect-agent
 metadata:
   author: twistingmercury@proton.me
   version: "1.0"

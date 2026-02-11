@@ -3,8 +3,8 @@
 set -e
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-WORKBENCH="${WORKBENCH:-$(cd "${SCRIPTS}/.." && pwd)}"
-PROJ_ROOT="${PROJ_ROOT:-$(cd "${WORKBENCH}/.." && pwd)}"
+SETUP_DIR="${SETUP_DIR:-$(cd "${SCRIPTS}/.." && pwd)}"
+PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 
 # Logging setup
 TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
@@ -20,7 +20,7 @@ CLAUDE_ROOT="${CLAUDE_ROOT:-${HOME}/.claude}"
 GLOBAL_CONF="${CLAUDE_ROOT}/CLAUDE.md"
 AGENT_RULES_SOURCE="${PROJ_ROOT}/agents/global-agent-rules.txt"
 
-source "${WORKBENCH}/lib/print.sh"
+source "${SETUP_DIR}/lib/print.sh"
 
 ## Not every Claude Code install may have a global Claude.md file.
 ## So when that situation is encountered, we'll need to create it for the user.

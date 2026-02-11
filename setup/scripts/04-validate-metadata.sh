@@ -3,8 +3,8 @@
 set -e
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-WORKBENCH="${WORKBENCH:-$(cd "${SCRIPTS}/.." && pwd)}"
-PROJ_ROOT="${PROJ_ROOT:-$(cd "${WORKBENCH}/.." && pwd)}"
+SETUP_DIR="${SETUP_DIR:-$(cd "${SCRIPTS}/.." && pwd)}"
+PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 
 # Logging setup
 TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
@@ -18,7 +18,7 @@ printf "Logging to: %s\n" "${LOG_FILE}"
 
 # Source print library
 # shellcheck source=lib/print.sh
-. "${WORKBENCH}/lib/print.sh"
+. "${SETUP_DIR}/lib/print.sh"
 
 # Configuration
 PATTERNS_DIR="${PATTERNS_DIR:-${PROJ_ROOT}/patterns}"

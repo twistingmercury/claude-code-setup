@@ -19,23 +19,18 @@ Core PostgreSQL patterns for relational data:
    - Transaction wrapping
    - golang-migrate compatibility
 
-2. **Updated-At Trigger Pattern** (`updated-at-trigger-pattern.md`)
-   - Reusable `update_updated_at()` function
-   - Trigger creation per table
-   - Timestamp handling best practices
-
-3. **Soft Delete Pattern** (`soft-delete-pattern.md`)
+2. **Soft Delete Pattern** (`soft-delete-pattern.md`)
    - `deleted_at` column approach
    - Partial indexes for active records
    - Views for hiding deleted records
    - Cascade considerations
 
-4. **Audit Columns Pattern** (`audit-columns-pattern.md`)
+3. **Audit Columns Pattern** (`audit-columns-pattern.md`)
    - Standard `created_at`, `updated_at` columns
    - Optional `created_by`, `updated_by` for user tracking
    - Default value strategies
 
-5. **JSONB Validation Pattern** (`jsonb-validation-pattern.md`)
+4. **JSONB Validation Pattern** (`jsonb-validation-pattern.md`)
    - CHECK constraints for JSONB structure
    - Required key validation
    - Type validation within JSONB
@@ -94,6 +89,10 @@ Graph database patterns for relationship-heavy data:
    - Aggregation and statistics
    - Full-text search
    - Go implementation with neo4j-go-driver
+
+3. **Neo4j CE to EE Migration Pattern** (`neo4j-ce-ee-migration-pattern.md`)
+   - Community to Enterprise edition migration
+   - Configuration changes and feature differences
 
 **When to use these:**
 - Knowledge graphs

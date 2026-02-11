@@ -1,4 +1,4 @@
-# Agent Workbench
+# Agent Setup
 
 > This directory contains the things you need to use Cognee as a local memory store. It's useful for testing out agent definitions and patterns locally before deploying to the broader ACE infrastructure.
 
@@ -9,7 +9,7 @@
 
 ## Prerequisites
 
-Before running the Agent Workbench setup, ensure you have the following tools and resources available.
+Before running the agent setup, ensure you have the following tools and resources available.
 
 ### Required Tools
 
@@ -89,7 +89,7 @@ This is required for Cognee to process data into knowledge graphs.
 > ⚠️ NOTE: THIS PROCESS WILL TAKE A GOOD 10 ~ 15 MINUTES DEPENDING ON YOUR MACHINE
 
 ```bash
-cd workbench
+cd setup
 ./scripts/installer.sh
 ```
 
@@ -97,10 +97,11 @@ This orchestrates the complete setup:
 
 1. Starts Docker containers (Cognee MCP, API, PostgreSQL, Neo4j)
 2. Installs agent definitions to `~/.claude/agents/`
-3. Installs global agent rules to `~/.claude/CLAUDE.md`
-4. Validates pattern metadata
-5. Loads patterns into Cognee datasets (one dataset per subdirectory)
-6. Enriches patterns with knowledge graph relationships
+3. Installs skill definitions to `~/.claude/skills/`
+4. Installs global agent rules to `~/.claude/CLAUDE.md`
+5. Validates pattern metadata
+6. Loads patterns into Cognee datasets (one dataset per subdirectory)
+7. Enriches patterns with knowledge graph relationships
 
 All logs are written to `scripts/logs/{TIMESTAMP}/` with one log file per script.
 
@@ -165,7 +166,7 @@ curl -X POST http://localhost:8000/api/v1/search \
 
 ## Manual Setup (Advanced)
 
-For users who want to run setup steps individually, the `install.sh` script orchestrates these numbered scripts in order:
+For users who want to run setup steps individually, the `scripts/installer.sh` script orchestrates these numbered scripts in order:
 
 ### 00-start-memory-infra.sh
 
@@ -193,45 +194,55 @@ Installs agent definitions to `~/.claude/agents/`.
 
 Logs to `scripts/logs/{TIMESTAMP}/01-install-agents.log`
 
-### 02-install-global-agent-rules.sh
+### 02-install-skills.sh
+
+Installs skill definitions to `~/.claude/skills/`.
+
+```bash
+./scripts/02-install-skills.sh
+```
+
+Logs to `scripts/logs/{TIMESTAMP}/02-install-skills.log`
+
+### 03-install-global-agent-rules.sh
 
 Installs global agent rules to `~/.claude/CLAUDE.md`.
 
 ```bash
-./scripts/02-install-global-agent-rules.sh
+./scripts/03-install-global-agent-rules.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/02-install-global-agent-rules.log`
+Logs to `scripts/logs/{TIMESTAMP}/03-install-global-agent-rules.log`
 
-### 03-validate-metadata.sh
+### 04-validate-metadata.sh
 
 Validates pattern metadata before loading.
 
 ```bash
-./scripts/03-validate-metadata.sh
+./scripts/04-validate-metadata.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/03-validate-metadata.log`
+Logs to `scripts/logs/{TIMESTAMP}/04-validate-metadata.log`
 
-### 04-load-patterns.sh
+### 05-load-patterns.sh
 
 Loads patterns into Cognee datasets (one dataset per subdirectory).
 
 ```bash
-./scripts/04-load-patterns.sh
+./scripts/05-load-patterns.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/04-load-patterns.log`
+Logs to `scripts/logs/{TIMESTAMP}/05-load-patterns.log`
 
-### 05-enrich-patterns.sh
+### 06-enrich-patterns.sh
 
 Enriches patterns with knowledge graph relationships.
 
 ```bash
-./scripts/05-enrich-patterns.sh
+./scripts/06-enrich-patterns.sh
 ```
 
-Logs to `scripts/logs/{TIMESTAMP}/05-enrich-patterns.log`
+Logs to `scripts/logs/{TIMESTAMP}/06-enrich-patterns.log`
 
 ## Service Endpoints
 
@@ -291,6 +302,7 @@ All data is stored in Docker volumes:
 
 - `postgres_data` - Relational data and vector embeddings (pgvector)
 - `neo4j_data` - Knowledge graph
+- `neo4j_logs` - Neo4j logs
 - `cognee_data` - Processed documents
 - `cognee_system` - System metadata
 
@@ -313,7 +325,7 @@ Edit both `cognee-mcp` and `cognee-api` service environments in `docker-compose.
 ```yaml
 # Required environment variables:
 - LLM_API_KEY=your-api-key-here
-- LLM_MODEL=gpt-4o # or gpt-4, claude-3-sonnet, etc.
+- LLM_MODEL=gpt-5-mini # or other OpenAI/Anthropic models
 - LLM_PROVIDER=openai # or anthropic, etc.
 - EMBEDDING_PROVIDER=openai
 - EMBEDDING_MODEL=text-embedding-3-small
@@ -400,15 +412,15 @@ Replace `localhost` with your server's LAN IP when connecting from other machine
 
 ## Loading and Processing Patterns
 
-The `install.sh` script automatically handles pattern loading and processing. This section documents the underlying workflow for reference.
+The `scripts/installer.sh` script automatically handles pattern loading and processing. This section documents the underlying workflow for reference.
 
 ### Pattern Loading Workflow
 
 #### Step 1: Load patterns into dataset
 
 ```bash
-cd workbench
-./scripts/04-load-patterns.sh
+cd setup
+./scripts/05-load-patterns.sh
 ```
 
 This script:
@@ -416,8 +428,8 @@ This script:
 - Validates pattern metadata before loading
 - Loads all `.md` files (except README.md) from `patterns/`
 - Adds files to the `patterns` dataset via `/api/v1/add` endpoint
-- Writes dataset name to `scripts/logs/datasets-loaded.txt`
-- Logs to `scripts/logs/{TIMESTAMP}/04-load-patterns.log`
+- Writes dataset name to `scripts/logs/{TIMESTAMP}/datasets-loaded.txt`
+- Logs to `scripts/logs/{TIMESTAMP}/05-load-patterns.log`
 
 **Environment variables:**
 
@@ -430,19 +442,19 @@ This script:
 Process specific datasets (from file):
 
 ```bash
-cat scripts/logs/datasets-loaded.txt | ./scripts/05-enrich-patterns.sh
+cat scripts/logs/datasets-loaded.txt | ./scripts/06-enrich-patterns.sh
 ```
 
 Process specific dataset (via echo):
 
 ```bash
-echo "patterns" | ./scripts/05-enrich-patterns.sh
+echo "patterns" | ./scripts/06-enrich-patterns.sh
 ```
 
 Process ALL datasets (no stdin):
 
 ```bash
-./scripts/05-enrich-patterns.sh
+./scripts/06-enrich-patterns.sh
 ```
 
 This script:
@@ -450,10 +462,10 @@ This script:
 - Accepts dataset names via stdin (piped or redirected)
 - If NO stdin data, cognifies ALL datasets
 - Calls `/api/v1/cognify` endpoint to build knowledge graphs
-- Logs to `scripts/logs/{TIMESTAMP}/05-enrich-patterns.log`
+- Logs to `scripts/logs/{TIMESTAMP}/06-enrich-patterns.log`
 - Processing runs asynchronously
 
-**Important:** The `05-enrich-patterns.sh` script does NOT accept command-line arguments. Arguments like `./scripts/05-enrich-patterns.sh patterns` will show an error. Use stdin only.
+**Important:** The `05-enrich-patterns.sh` script does NOT accept command-line arguments. Arguments like `./scripts/06-enrich-patterns.sh patterns` will show an error. Use stdin only.
 
 **Environment variables:**
 
@@ -471,12 +483,12 @@ docker compose logs -f cognee-api
 
 ```bash
 # Load patterns into Cognee dataset
-./scripts/04-load-patterns.sh
+./scripts/05-load-patterns.sh
 # Output: Writes "patterns" to scripts/logs/datasets-loaded.txt
 
 # Process into knowledge graph (choose one):
-cat scripts/logs/datasets-loaded.txt | ./scripts/05-enrich-patterns.sh  # Process loaded datasets
-./scripts/05-enrich-patterns.sh                                          # Process ALL datasets
+cat scripts/logs/datasets-loaded.txt | ./scripts/06-enrich-patterns.sh  # Process loaded datasets
+./scripts/06-enrich-patterns.sh                                          # Process ALL datasets
 
 # Monitor async processing
 docker compose logs -f cognee-api

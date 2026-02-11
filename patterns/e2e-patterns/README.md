@@ -57,7 +57,7 @@ The `go-e2e-test-engineer` agent automatically queries Cognee for patterns when 
 
 1. **Agent identifies test type** (CLI, REST, GraphQL, gRPC)
 2. **Agent searches Cognee**: `search(search_query="REST API testing pattern", search_type="GRAPH_COMPLETION")`
-4. **Agent applies pattern**: Uses retrieved code examples and practices
+3. **Agent applies pattern**: Uses retrieved code examples and practices
 
 ### Example Workflow
 
@@ -65,7 +65,7 @@ The `go-e2e-test-engineer` agent automatically queries Cognee for patterns when 
 User: "I've completed the POST /api/users endpoint. Create E2E tests?"
 Agent (go-e2e-test-engineer):
   1. Queries Cognee: search(search_query="REST API testing pattern", search_type="GRAPH_COMPLETION")
-  3. Creates comprehensive E2E tests following the pattern
+  2. Creates comprehensive E2E tests following the pattern
 
 Result: Complete test suite covering happy path, validation errors, authentication,
         not found scenarios, and pagination - all without importing internal code.
@@ -164,7 +164,7 @@ brew install jq
 
 ```bash
 # Solution: Configure Cognee MCP server
-# See memory-mcp-server/README.md for setup instructions
+# See setup/README.md for setup instructions
 ```
 
 ### Cognee Query Issues

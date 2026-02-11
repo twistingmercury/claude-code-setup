@@ -5,21 +5,21 @@ set -e
 # shellcheck disable=SC1091
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-WORKBENCH="${WORKBENCH:-$(cd "${SCRIPTS}/.." && pwd)}"
-PROJ_ROOT="${PROJ_ROOT:-$(cd "${WORKBENCH}/.." && pwd)}"
+SETUP_DIR="${SETUP_DIR:-$(cd "${SCRIPTS}/.." && pwd)}"
+PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 
 echo "${SCRIPTS}"
-echo "${WORKBENCH}"
+echo "${SETUP_DIR}"
 echo "${PROJ_ROOT}"
 
 # Set shared timestamp for all logs during this install run
 export TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
 
 # shellcheck source=../lib/print.sh
-. "${WORKBENCH}/lib/print.sh"
+. "${SETUP_DIR}/lib/print.sh"
 
 main(){
-    print::info "Starting agent workbench installation..."
+    print::info "Starting agent setup installation..."
 
     print::info "Step 1/7: Starting memory infrastructure..."
     if ! "${SCRIPTS}/00-start-memory-infra.sh"; then

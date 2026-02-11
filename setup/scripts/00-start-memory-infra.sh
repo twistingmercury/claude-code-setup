@@ -2,8 +2,8 @@
 set -e
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-WORKBENCH="${WORKBENCH:-$(cd "${SCRIPTS}/.." && pwd)}"
-PROJ_ROOT="${PROJ_ROOT:-$(cd "${WORKBENCH}/.." && pwd)}"
+SETUP_DIR="${SETUP_DIR:-$(cd "${SCRIPTS}/.." && pwd)}"
+PROJ_ROOT="${PROJ_ROOT:-$(cd "${SETUP_DIR}/.." && pwd)}"
 
 TIMESTAMP="${TIMESTAMP:-$(date +%Y%m%d-%H%M%S)}"
 LOG_DIR="${SCRIPTS}/logs/${TIMESTAMP}"
@@ -11,7 +11,7 @@ LOG_FILE="${LOG_DIR}/00-start-memory-infra.log"
 
 mkdir -p "${LOG_DIR}"
 
-cd "${WORKBENCH}"
+cd "${SETUP_DIR}"
 
 printf "Logging to: %s\n" "${LOG_FILE}"
 
