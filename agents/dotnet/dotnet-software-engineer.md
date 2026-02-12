@@ -3,9 +3,6 @@ name: dotnet software engineer
 description: Expert C# and .NET engineer for writing, refactoring, optimizing, and architecting production-grade .NET applications with best practices.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

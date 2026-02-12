@@ -3,9 +3,6 @@ name: api architect
 description: Language-agnostic API specification architect. Designs OpenAPI (REST), GraphQL schemas, Protocol Buffer (gRPC), and AsyncAPI (event-driven) specifications. Chooses appropriate API style and creates complete specifications with authentication, pagination, and error handling.
 model: opus
 memory: user
-mcpServers:
-  - cognee
-  - context7
 skills:
   - arch-docs
   - mermaid-diagrams:mermaid-diagrams

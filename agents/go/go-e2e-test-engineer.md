@@ -3,9 +3,6 @@ name: go e2e test engineer
 description: Creates comprehensive black-box E2E tests in Go that validate user-facing behavior of REST/GraphQL/gRPC APIs and CLI tools without internal dependencies.
 model: opus
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

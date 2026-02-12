@@ -3,9 +3,6 @@ name: technical writer
 description: Creates and maintains project documentation (README, CHANGELOG, guides) following strict documentation standards and best practices.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

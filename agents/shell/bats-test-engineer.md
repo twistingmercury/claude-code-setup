@@ -3,9 +3,6 @@ name: bats test engineer
 description: Creates comprehensive BATS (Bash Automated Testing System) test suites for shell scripts with proper isolation, Docker testing, and assertion patterns.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

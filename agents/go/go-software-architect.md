@@ -3,9 +3,6 @@ name: go software architect
 description: Go-specific software architecture consultant. Receives high-level architecture from solution-architect and translates it into detailed Go implementation plans with specific frameworks, patterns, project structure, and CLI design. Can also work directly for Go-only projects.
 model: opus
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

@@ -3,9 +3,6 @@ name: python software engineer
 description: Expert Python engineer for writing, refactoring, optimizing, and architecting production-grade Python code with best practices.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

@@ -3,9 +3,6 @@ name: solutions architect
 description: Language-agnostic architecture consultant. Analyzes requirements, assesses existing projects, recommends high-level technical solutions (API styles, deployment strategies, platform choices). Hands off to language-specific architects for implementation planning.
 model: opus
 memory: user
-mcpServers:
-  - cognee
-  - context7
 skills:
   - arch-docs
   - mermaid-diagrams:mermaid-diagrams

@@ -3,9 +3,6 @@ name: shell script engineer
 description: Expert shell script engineer for writing production-grade POSIX-compliant bash scripts with emphasis on readability, testability, and maintainability.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

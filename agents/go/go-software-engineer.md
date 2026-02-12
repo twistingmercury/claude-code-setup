@@ -3,9 +3,6 @@ name: go software engineer
 description: Expert Go engineer for writing, refactoring, optimizing, and architecting production-grade Go code with best practices.
 model: opus
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

@@ -3,9 +3,6 @@ name: react software engineer
 description: Expert React and TypeScript engineer for building, refactoring, and optimizing production-grade React applications with modern patterns and best practices.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

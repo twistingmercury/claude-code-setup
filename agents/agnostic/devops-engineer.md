@@ -3,9 +3,6 @@ name: devops engineer
 description: Expert in application deployment, containerization, CI/CD pipelines, and infrastructure across languages and platforms.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"

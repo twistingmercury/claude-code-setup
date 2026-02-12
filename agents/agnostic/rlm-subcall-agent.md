@@ -3,11 +3,7 @@ name: rlm subcall agent
 description: Acts as the RLM sub-LLM (llm_query). Given a chunk of context (usually via a file path) and a query, extract only what is relevant and return a compact structured result. Use proactively for long contexts.
 model: haiku
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
-  - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"
   - "mcp__context7__query-docs"
   - "Read(**/*)"

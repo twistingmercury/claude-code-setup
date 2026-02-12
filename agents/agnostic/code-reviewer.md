@@ -3,9 +3,6 @@ name: code reviewer
 description: Reviews code against documented patterns, identifies best practice violations, and suggests improvements.
 model: sonnet
 memory: user
-mcpServers:
-  - cognee
-  - context7
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"
