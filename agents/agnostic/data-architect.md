@@ -5,15 +5,15 @@ model: opus
 memory: user
 mcpServers:
   - cognee
-  - context7:
-      command: npx
-      args: ["-y", "@upstash/context7-mcp"]
+  - context7
 skills:
   - arch-docs
   - mermaid-diagrams:mermaid-diagrams
   - writing-clearly-and-concisely:writing-clearly-and-concisely
 tools:
   - "mcp__cognee__search"
+  - "mcp__context7__resolve-library-id"
+  - "mcp__context7__query-docs"
   - "Read(**/*)"
   - "Write(**/*)"
   - "Glob(**/*)"

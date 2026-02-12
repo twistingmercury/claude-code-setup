@@ -5,11 +5,11 @@ model: haiku
 memory: user
 mcpServers:
   - cognee
-  - context7:
-      command: npx
-      args: ["-y", "@upstash/context7-mcp"]
+  - context7
 tools:
   - "mcp__cognee__search"
+  - "mcp__context7__resolve-library-id"
+  - "mcp__context7__query-docs"
   - "Read(**/*)"
   - "Glob(**/*)"
 ---

@@ -16,7 +16,7 @@ exec > >(tee -a "${LOG_FILE}") 2>&1
 
 printf "Logging to: %s\n" "${LOG_FILE}"
 
-COMMAND_SOURCE="${PROJ_ROOT}/agents/commands"
+COMMAND_SOURCE="${PROJ_ROOT}/commands"
 COMMANDS_DIR="${COMMANDS_DIR:-${HOME}/.claude/commands/}"
 
 validate_environment() {
