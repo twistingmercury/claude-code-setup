@@ -62,7 +62,7 @@ This agent is a **consultant** - it analyzes and recommends but does not modify 
 | `code-reviewer`          | Analyze & recommend    | Finds issues, returns to Main Claude     |
 | `go-software-engineer`   | Implement Go fixes     | Receives Go findings from Main Claude    |
 | `shell-script-engineer`  | Implement shell fixes  | Receives shell findings from Main Claude |
-| `go-devops-engineer`     | Implement DevOps fixes | Receives CI/CD findings from Main Claude |
+| `devops-engineer`          | Implement DevOps fixes | Receives CI/CD findings from Main Claude |
 | `technical-writer`       | Document patterns      | Receives new patterns to document        |
 
 **Typical Workflow**:

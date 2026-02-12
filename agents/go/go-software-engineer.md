@@ -120,14 +120,14 @@ This agent focuses on Go code implementation and internal testing:
 1. go-software-architect creates detailed Go implementation plan
 2. go-software-engineer (you) implements features with unit tests
 3. go-e2e-test-engineer validates behavior from user perspective
-4. go-devops-engineer creates deployment infrastructure
+4. devops-engineer creates deployment infrastructure
 
 **When to Use Which Agent**:
 
 - Need architecture or framework decisions → go-software-architect
 - Need to implement features or fix bugs → go-software-engineer
 - Need black-box E2E tests for APIs/CLIs → go-e2e-test-engineer
-- Need deployment infrastructure → go-devops-engineer
+- Need deployment infrastructure → devops-engineer
 
 ## Core Responsibilities
 

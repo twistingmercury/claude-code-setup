@@ -229,5 +229,5 @@ To add or update patterns:
 
 - [go-e2e-test-engineer agent](../../agents/go/go-e2e-test-agent.md)
 - [go-software-engineer agent](../../agents/go/go-software-agent.md)
-- [go-devops-engineer agent](../../agents/go/go-devops-agent.md)
+- [devops-engineer agent](../../agents/agnostic/devops-engineer.md)
 - [Cognee Documentation](https://github.com/topoteretes/cognee)

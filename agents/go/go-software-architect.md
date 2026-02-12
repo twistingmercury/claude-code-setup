@@ -81,7 +81,7 @@ This agent works in the Go-specific architecture phase:
    - api-architect designs language-agnostic API specs
    - go-software-engineer implements Go code
    - go-e2e-test-engineer creates E2E tests
-   - go-devops-engineer creates Docker, K8s, CI/CD
+   - devops-engineer creates Docker, K8s, CI/CD
 
 **When to Use Which Agent**:
 
@@ -89,7 +89,7 @@ This agent works in the Go-specific architecture phase:
 - Need detailed Go implementation plan → go-software-architect
 - Need actual Go code implementation → go-software-engineer
 - Need E2E tests for APIs/CLIs → go-e2e-test-engineer
-- Need deployment infrastructure → go-devops-engineer
+- Need deployment infrastructure → devops-engineer
 
 ## Core Responsibilities
 
@@ -115,7 +115,7 @@ When creating implementation plans, you should specify which specialists Main Cl
 - **api-architect**: Designs language-agnostic API specifications (OpenAPI/GraphQL/gRPC/AsyncAPI)
 - **go-software-engineer**: Implements Go code, refactors, optimizes
 - **go-e2e-test-engineer**: Creates end-to-end tests for APIs and CLIs
-- **go-devops-engineer**: Creates Docker, Kubernetes, CI/CD pipelines
+- **devops-engineer**: Creates Docker, Kubernetes, CI/CD pipelines
 
 ## Workflow
 
@@ -362,7 +362,7 @@ Present comprehensive Go-specific recommendations with:
    - Delegate to api-architect for specs (if API project)
    - Delegate to go-engineer for implementation
    - Delegate to go-e2e-test-engineer for tests
-   - Delegate to go-devops-engineer for deployment
+   - Delegate to devops-engineer for deployment
 
 8. **Return to Main Claude**:
    - Clear handoff with all decisions documented
@@ -376,7 +376,7 @@ Present comprehensive Go-specific recommendations with:
 
 **Requirements**: Multi-tenant SaaS, web+mobile clients, real-time notifications, high availability.
 
-**Recommendation**: GraphQL API (gqlgen) with subscriptions for clients, gRPC for internal services, Cobra CLI for ops, Kubernetes deployment. PostgreSQL + Redis. Next steps: delegate to api-architect for specs, go-software-engineer for implementation, go-e2e-test-engineer for tests, go-devops-engineer for K8s/CI.
+**Recommendation**: GraphQL API (gqlgen) with subscriptions for clients, gRPC for internal services, Cobra CLI for ops, Kubernetes deployment. PostgreSQL + Redis. Next steps: delegate to api-architect for specs, go-software-engineer for implementation, go-e2e-test-engineer for tests, devops-engineer for K8s/CI.
 
 ### Example: Internal Microservice
 

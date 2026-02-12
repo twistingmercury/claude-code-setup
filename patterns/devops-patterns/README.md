@@ -1,6 +1,6 @@
 # DevOps Patterns for Cognee
 
-This directory has comprehensive DevOps patterns for building, containerizing, and deploying Go applications. The `go-devops-engineer` agent uses these patterns when setting up build infrastructure and CI/CD pipelines.
+This directory has comprehensive DevOps patterns for building, containerizing, and deploying Go applications. The `devops-engineer` agent uses these patterns when setting up build infrastructure and CI/CD pipelines.
 
 ## Pattern Files
 
@@ -63,9 +63,9 @@ Each pattern file has:
 - GitHub Actions workflow
 - No binary output (validation-focused)
 
-## Usage with go-devops-engineer Agent
+## Usage with devops-engineer Agent
 
-The `go-devops-engineer` agent grabs patterns from Cognee as needed:
+The `devops-engineer` agent grabs patterns from Cognee as needed:
 
 1. **Agent identifies project type** (Service, CLI tool, etc.)
 2. **Agent searches Cognee**: `search(search_query="Service Dockerfile pattern", search_type="GRAPH_COMPLETION")`
@@ -76,7 +76,7 @@ The `go-devops-engineer` agent grabs patterns from Cognee as needed:
 ```text
 User: "I've finished implementing the user management API. Set up build and deployment."
 
-Agent (go-devops-engineer):
+Agent (devops-engineer):
   1. Queries Cognee: search(search_query="Service Dockerfile pattern", search_type="GRAPH_COMPLETION")
   2. Retrieves patterns: Dockerfile, build script, Azure DevOps pipeline
   3. Creates complete build infrastructure following patterns
@@ -110,11 +110,11 @@ These patterns are already loaded in Cognee. If you need to reload them:
 
 1. Patterns are stored in this directory
 2. Use Cognee MCP tools to create entities
-3. Patterns become automatically available to the go-devops-engineer agent
+3. Patterns become automatically available to the devops-engineer agent
 
 ## Related Documentation
 
-- [go-devops-engineer agent](../../agents/go/go-devops-agent.md)
+- [devops-engineer agent](../../agents/agnostic/devops-engineer.md)
 - [go-software-engineer agent](../../agents/go/go-software-agent.md)
 - [go-e2e-test-engineer agent](../../agents/go/go-e2e-test-agent.md)
 - [E2E Testing Patterns](../e2e-patterns/README.md)

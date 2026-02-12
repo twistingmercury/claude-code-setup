@@ -18,7 +18,7 @@
 | Documentation          | `technical-writer`         |
 | System architecture    | `solutions-architect`      |
 | Go architecture        | `go-software-architect`    |
-| DevOps/Docker/CI       | `go-devops-engineer`       |
+| DevOps/Docker/CI       | `devops-engineer`          |
 | Data schema/models     | `data-architect`           |
 | SQL/migrations/Cypher  | `data-engineer`            |
 | Code review/compliance | `/code-review` skill       |

@@ -35,7 +35,7 @@ User[User Request] --> Main[Main Claude<br/>Coordinator]
     Impl --> SoftEng[software-engineer<br/>Go, Python, .NET, React, Shell]
     Impl --> DataEng[data-engineer<br/>SQL, Cypher]
     Test --> E2EEng[e2e-test-engineer<br/>Go, BATS]
-    DevOps --> DevOpsEng[devops-engineer<br/>Go]
+    DevOps --> DevOpsEng[devops-engineer]
     Doc --> DocEng[technical-writer]
     Review --> CodeReview[code-reviewer]
 
