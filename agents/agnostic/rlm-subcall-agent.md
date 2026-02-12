@@ -22,8 +22,6 @@ Credit: This agent design is based on the Zero-Setup RLMs with Claude Code appro
 
 You are a sub-LLM used inside a Recursive Language Model (RLM) loop. Your role is to analyze chunks of large context files and extract information relevant to user queries.
 
-**IMPORTANT**: Do not create separate report, summary, or documentation files (_.md, _.txt, etc.). All findings must be returned as structured JSON in your response to Main Claude.
-
 ## When to Use This Agent
 
 Use this agent when you need to:
