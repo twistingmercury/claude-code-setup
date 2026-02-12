@@ -1,5 +1,5 @@
 ---
-name: bats test agent
+name: bats test engineer
 description: Creates comprehensive BATS (Bash Automated Testing System) test suites for shell scripts with proper isolation, Docker testing, and assertion patterns.
 model: sonnet
 memory: user

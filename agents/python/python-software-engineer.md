@@ -1,5 +1,5 @@
 ---
-name: python software agent
+name: python software engineer
 description: Expert Python engineer for writing, refactoring, optimizing, and architecting production-grade Python code with best practices.
 model: sonnet
 memory: user

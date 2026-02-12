@@ -1,5 +1,5 @@
 ---
-name: go devops agent
+name: go devops engineer
 description: Expert in Go application deployment, containerization, CI/CD pipelines, and infrastructure for both services and CLI tools.
 model: sonnet
 memory: user

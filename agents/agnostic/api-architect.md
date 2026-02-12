@@ -1,5 +1,5 @@
 ---
-name: api architect agent
+name: api architect
 description: Language-agnostic API specification architect. Designs OpenAPI (REST), GraphQL schemas, Protocol Buffer (gRPC), and AsyncAPI (event-driven) specifications. Chooses appropriate API style and creates complete specifications with authentication, pagination, and error handling.
 model: opus
 memory: user
@@ -84,7 +84,7 @@ This agent works in the architecture design chain:
 
 - Need high-level architecture recommendation → solution-architect
 - Need language-agnostic API specification → api-architect
-- Need language-specific implementation plan → go-architect, python-architect, etc.
+- Need language-specific implementation plan → go-software-architect, python-architect, etc.
 
 ## Core Responsibilities
 
@@ -178,7 +178,7 @@ Architecture docs:
 Spec files:
 - api/rest/openapi.yaml (or api/graphql/schema.graphql, api/protobuf/*.proto, api/async/asyncapi.yaml)
 
-Hand-off to [go-architect/etc.]:
+Hand-off to [go-software-architect/etc.]:
 - Review spec files in api/ for code generation
 - Review docs/architecture/04-communication-patterns.md for design context
 - Choose code generators and frameworks

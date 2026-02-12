@@ -1,6 +1,6 @@
 ---
-name: dotnet software agent
-description: Expert C# and .NET engineer for writing, refactoring, optimizing, and architecting production-grade .NET 10 applications with best practices.
+name: dotnet software engineer
+description: Expert C# and .NET engineer for writing, refactoring, optimizing, and architecting production-grade .NET applications with best practices.
 model: sonnet
 memory: user
 mcpServers:

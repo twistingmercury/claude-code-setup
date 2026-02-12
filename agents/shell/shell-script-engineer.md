@@ -1,5 +1,5 @@
 ---
-name: shell script agent
+name: shell script engineer
 description: Expert shell script engineer for writing production-grade POSIX-compliant bash scripts with emphasis on readability, testability, and maintainability.
 model: sonnet
 memory: user

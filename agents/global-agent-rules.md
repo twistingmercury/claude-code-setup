@@ -10,24 +10,24 @@
 
 | Task                   | Delegate To                |
 | ---------------------- | -------------------------- |
-| BATS tests             | `bats-test-agent`          |
+| BATS tests             | `bats-test-engineer`       |
 | Shell scripts          | `/shell-script` skill      |
-| Go code/services       | `go-software-agent`        |
-| E2E tests              | `go-e2e-test-agent`        |
-| API specs              | `api-architect-agent`      |
-| Documentation          | `documentation-agent`      |
-| System architecture    | `solution-architect-agent` |
-| Go architecture        | `go-architect-agent`       |
-| DevOps/Docker/CI       | `go-devops-agent`          |
-| Data schema/models     | `data-architect-agent`     |
-| SQL/migrations/Cypher  | `data-engineer-agent`      |
+| Go code/services       | `go-software-engineer`     |
+| E2E tests              | `go-e2e-test-engineer`     |
+| API specs              | `api-architect`            |
+| Documentation          | `technical-writer`         |
+| System architecture    | `solutions-architect`      |
+| Go architecture        | `go-software-architect`    |
+| DevOps/Docker/CI       | `go-devops-engineer`       |
+| Data schema/models     | `data-architect`           |
+| SQL/migrations/Cypher  | `data-engineer`            |
 | Code review/compliance | `/code-review` skill       |
 
 ### Multi-Step Workflows
 
-1. **Complex projects**: `solution-architect-agent` → recommendations → `go-architect-agent` → plan → specialists
-2. **Go projects**: `go-architect-agent` → plan → specialists
-3. **Data work**: `data-architect-agent` → schema → `data-engineer-agent` → migrations → `go-software-agent`
+1. **Complex projects**: `solutions-architect` → recommendations → `go-software-architect` → plan → specialists
+2. **Go projects**: `go-software-architect` → plan → specialists
+3. **Data work**: `data-architect` → schema → `data-engineer` → migrations → `go-software-engineer`
 4. **Shell scripts**: Run `/shell-script` skill (creates script + BATS tests + fix loop)
 5. **Code review**: Run `/code-review` skill (3-agent parallel review + synthesis)
 

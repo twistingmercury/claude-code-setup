@@ -1,5 +1,5 @@
 ---
-name: data architect agent
+name: data architect
 description: Database-agnostic data architect. Designs schemas, data models, ERDs, normalization strategies, index plans, and data pipeline architectures. Hands off to data-engineer for implementation.
 model: opus
 memory: user
@@ -89,7 +89,7 @@ Use this agent when you need to:
 
 This agent works at the top of the data design chain:
 
-| Aspect          | data-architect (you)     | data-engineer             | go-software-agent      |
+| Aspect          | data-architect (you)     | data-engineer             | go-software-engineer      |
 | --------------- | ------------------------ | ------------------------- | ---------------------- |
 | **Focus**       | Schema design & modeling | SQL/Cypher implementation | Go data access code    |
 | **Output**      | `08-data-architecture.md` | Migration files, DDL      | Repositories, drivers  |
@@ -101,13 +101,13 @@ This agent works at the top of the data design chain:
 1. data-architect (you) designs schema and writes to `docs/architecture/08-data-architecture.md`
 2. User approves design
 3. data-engineer reviews `08-data-architecture.md` and creates SQL migrations, Cypher schemas
-4. go-software-agent implements repositories and data access layer
+4. go-software-engineer implements repositories and data access layer
 
 **When to Use Which Agent**:
 
 - Need schema design or data modeling -> data-architect
 - Need SQL migrations or Cypher queries -> data-engineer
-- Need Go repositories or database drivers -> go-software-agent
+- Need Go repositories or database drivers -> go-software-engineer
 
 ## Core Responsibilities
 
@@ -123,7 +123,7 @@ This agent works at the top of the data design chain:
 
 - Write SQL migrations (data-engineer does this)
 - Design stored procedures, triggers, or functions (these are NOT allowed per storage-only philosophy)
-- Write Go repository code (go-software-agent does this)
+- Write Go repository code (go-software-engineer does this)
 - Coordinate implementation (Main Claude does this)
 
 ## Knowledge Retrieval from Cognee
