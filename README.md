@@ -4,6 +4,8 @@
 
 ---
 
+> NOTE: The skill `/rlm` is licensed separately as it is a work derived from John Adeojo (brainqub3). The project is here: https://github.com/brainqub3/claude_code_RLM
+
 Specialized development agents and reusable patterns for AI-assisted software development with Claude Code. Main Claude acts as a coordinator, delegating architecture, implementation, testing, deployment, and documentation tasks to purpose-built specialist agents that retrieve best-practice patterns from a Cognee knowledge graph.
 
 ## Usage

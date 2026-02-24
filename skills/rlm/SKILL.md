@@ -1,98 +1,98 @@
-Persistent mini-REPL for RLM-style workflows in Claude Code.
-
-<!--
-I want to give credit where credit is due; this is not my creation. I got it from this post Zero-Setup RLMs with Claude Code (https://www.youtube.com/watch?v=m6itCxJFqpo)
--->
-
 ---
-
 name: rlm
-description: Run a Recursive Language Model-style loop for long-context tasks. Uses a persistent local Python REPL and an rlm-subcall subagent as the sub-LLM (llm_query).
-allowed-tools:
-
-- Read
-- Write
-- Edit
-- Grep
-- Glob
-- Bash
-
+description: Run a Recursive Language Model-style loop for long-context tasks using a persistent local REPL.
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
 # rlm (Recursive Language Model workflow)
 
-Use this Skill when:
+Use this skill when:
+- The user provides a large context file or document directory.
+- You need iterative search/chunk/extract over that context.
+- You want to reuse loaded context across multiple queries.
 
-- The user provides (or references) a very large context file (docs, logs, transcripts, scraped webpages) that won't fit comfortably in chat context.
-- You need to iteratively inspect, search, chunk, and extract information from that context.
-- You can delegate chunk-level analysis to a subagent.
+## Inputs
 
-## Mental model
+This skill reads `$ARGUMENTS`.
 
-- Main Claude Code conversation = the root LM.
-- Persistent Python REPL (`rlm_repl.py`) = the external environment.
-- Subagent `rlm-subcall` = the sub-LM used like `llm_query`.
+Required:
+- `context=<path>`: file path (single-file mode) or directory path (corpus mode)
+- `query=<question>`: question/task to run against the loaded context
 
-## How to run
+Optional:
+- `chunk_chars=<int>` (default ~200000)
+- `overlap_chars=<int>` (default 0)
+- `strict=true` (corpus mode only, fail on first parse error)
 
-### Inputs
+If arguments are missing, ask for:
+1. context path
+2. query
 
-This Skill reads `$ARGUMENTS`. Accept these patterns:
+## Workflow
 
-- `context=<path>` (required): path to the file containing the large context.
-- `query=<question>` (required): what the user wants.
-- Optional: `chunk_chars=<int>` (default ~200000) and `overlap_chars=<int>` (default 0).
+1. Initialize state.
 
-If the user didn't supply arguments, ask for:
-
-1. the context file path, and
-2. the query.
-
-### Step-by-step procedure
-
-1. Initialise the REPL state
+   Single-file mode:
 
    ```bash
-   python3 .claude/skills/rlm/scripts/rlm_repl.py init <context_path>
-   python3 .claude/skills/rlm/scripts/rlm_repl.py status
+   python3 scripts/rlm_repl.py init <context_path>
+   python3 scripts/rlm_repl.py status
    ```
 
-2. Scout the context quickly
+   Corpus mode (recursive, honors `.rlmignore` if present):
 
    ```bash
-   python3 .claude/skills/rlm/scripts/rlm_repl.py exec -c "print(peek(0, 3000))"
-   python3 .claude/skills/rlm/scripts/rlm_repl.py exec -c "print(peek(len(content)-3000, len(content)))"
+   python3 scripts/rlm_repl.py init-corpus <context_dir>
+   python3 scripts/rlm_repl.py status
    ```
 
-3. Choose a chunking strategy
-   - Prefer semantic chunking if the format is clear (markdown headings, JSON objects, log timestamps).
-   - Otherwise, chunk by characters (size around chunk_chars, optional overlap).
-
-4. Materialise chunks as files (so subagents can read them)
+   Corpus strict mode:
 
    ```bash
-   python3 .claude/skills/rlm/scripts/rlm_repl.py exec <<'PY'
+   python3 scripts/rlm_repl.py init-corpus <context_dir> --strict
+   ```
+
+2. Check/install optional parsers when needed.
+
+   ```bash
+   python3 scripts/rlm_repl.py check-deps
+   python3 scripts/rlm_repl.py install-deps
+   python3 scripts/rlm_repl.py install-deps --all --dry-run
+   ```
+
+3. Scout the loaded context.
+
+   ```bash
+   python3 scripts/rlm_repl.py exec -c "print(peek(0, 3000))"
+   python3 scripts/rlm_repl.py exec -c "print(peek(len(content)-3000, len(content)))"
+   ```
+
+4. Materialize chunks for subagent analysis.
+
+   ```bash
+   python3 scripts/rlm_repl.py exec <<'PY'
    paths = write_chunks('.claude/rlm_state/chunks', size=200000, overlap=0)
    print(len(paths))
    print(paths[:5])
    PY
    ```
 
-5. Subcall loop (delegate to rlm-subcall)
-   - For each chunk file, invoke the rlm-subcall subagent with:
-     - the user query,
-     - the chunk file path,
-     - and any specific extraction instructions.
-   - Keep subagent outputs compact and structured (JSON preferred).
-   - Append each subagent result to buffers (either manually in chat, or by pasting into a REPL add_buffer(...) call).
-
-6. Synthesis
-   - Once enough evidence is collected, synthesise the final answer in the main conversation.
-   - Optionally ask rlm-subcall once more to merge the collected buffers into a coherent draft.
+5. Run subcalls and synthesize results.
 
 ## Guardrails
 
-- Do not paste large raw chunks into the main chat context.
-- Use the REPL to locate exact excerpts; quote only what you need.
-- Subagents cannot spawn other subagents. Any orchestration stays in the main conversation.
-- Keep scratch/state files under .claude/rlm_state/.
+- Do not paste large raw chunks into chat.
+- Quote only needed excerpts.
+- Keep scratch/state files under `.claude/rlm_state/`.
+- For first iteration, refresh manually when sources change:
+  - `/rlm reset`
+  - then re-run `/rlm context=... query=...`
+
+## Notes
+
+- Optional document parsers:
+  - PDF: `pypdf`
+  - DOCX: `python-docx`
+  - ODT: `odfpy`
+- Default corpus excludes: `.git/`, `node_modules/`, `bin/`, `_archive/`.
+- Additional reference docs are in `references/`.
