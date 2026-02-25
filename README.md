@@ -1,6 +1,10 @@
 # Claude Code Agent Ecosystem
 
-> **Maturity Level**: Emerging - Reference implementation; agent coordination patterns and Cognee integration are evolving based on real-world usage.
+> **Maturity Level**: Basic - Ready for use. Agent patterns and Cognee integration are evolving based on real-world usage.
+>
+> - **Emerging**: Prototype, not production-ready, expect breaking changes
+> - **Basic**: Production-ready but actively evolving, expect minor version changes
+> - **Mature**: Stable, battle-tested, changes are rare
 
 ---
 
