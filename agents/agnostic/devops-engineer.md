@@ -74,6 +74,10 @@ tools:
   - "Bash(wc *)"
   - "Bash(grep *)"
   - "Bash(ls *)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 # DevOps Engineer
 

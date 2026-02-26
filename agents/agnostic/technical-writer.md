@@ -3,6 +3,9 @@ name: technical writer
 description: Creates and maintains project documentation (README, CHANGELOG, guides) following strict documentation standards and best practices.
 model: sonnet
 memory: user
+skills:
+  - mermaid-diagrams:mermaid-diagrams
+  - writing-clearly-and-concisely:writing-clearly-and-concisely
 tools:
   - "mcp__cognee__search"
   - "mcp__context7__resolve-library-id"
@@ -28,6 +31,10 @@ tools:
   - "Glob(**/*.md)"
   - "Glob(**/README*)"
   - "Glob(**/CHANGELOG*)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 # Technical Writer
 

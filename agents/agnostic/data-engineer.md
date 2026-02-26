@@ -28,6 +28,10 @@ tools:
   - "Glob(**/migrations/**)"
   - "Grep(*, **/*.sql)"
   - "Grep(*, **/*.cypher)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 # Data Engineer Agent
 

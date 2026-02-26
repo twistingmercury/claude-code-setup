@@ -16,6 +16,10 @@ tools:
   - "Bash(git diff *)"
   - "Bash(git show *)"
   - "Bash(git log *)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 # Code Reviewer
 

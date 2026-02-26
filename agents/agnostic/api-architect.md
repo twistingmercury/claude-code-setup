@@ -16,6 +16,10 @@ tools:
   - "Glob(**/*)"
   - "Grep(*, **/*)"
   - "Bash(mkdir *)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 
 # API Architect Agent

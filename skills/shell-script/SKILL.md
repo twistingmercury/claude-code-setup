@@ -1,12 +1,7 @@
 ---
 name: shell-script
 description: Orchestrates shell script creation with automatic BATS test generation and iterative fix loop.
-allowed-tools:
-  - Task
-  - Read
-  - Glob
-  - Grep
-  - Bash
+allowed-tools: Read, Grep
 ---
 
 # Shell Script Creation Skill

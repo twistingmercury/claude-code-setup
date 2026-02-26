@@ -8,6 +8,10 @@ tools:
   - "mcp__context7__query-docs"
   - "Read(**/*)"
   - "Glob(**/*)"
+disallowedTools:
+  - "Bash(git add *)"
+  - "Bash(git commit *)"
+  - "Bash(git push *)"
 ---
 # RLM Subcall Agent
 
