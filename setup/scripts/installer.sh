@@ -39,12 +39,6 @@ main(){
         return 3
     fi
 
-    print::info "Step 4/8: Installing commands..."
-    if ! "${SCRIPTS}/03-install-commands.sh"; then
-        print::error "Failed to install commands"
-        return 4
-    fi
-
     print::info "Step 5/8: Installing global agent rules..."
     if ! "${SCRIPTS}/04-install-global-agent-rules.sh"; then
         print::error "Failed to install global agent rules"

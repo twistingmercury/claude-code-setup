@@ -17,14 +17,9 @@ exec > >(tee -a "${LOG_FILE}") 2>&1
 printf "Logging to: %s\n" "${LOG_FILE}"
 
 AGENT_SOURCE="${PROJ_ROOT}/agents"
-AGENTS_DIR="${AGENTS_DIR:-${HOME}/.claude/agents/}"
+AGENTS_DIR="${HOME}/.claude/agents/"
 
 validate_environment() {
-    if [ -z "${AGENTS_DIR}" ]; then
-        printf "ERROR: AGENTS_DIR is not set\n" >&2
-        return 1
-    fi
-
     if [ ! -d "${AGENT_SOURCE}" ]; then
         printf "ERROR: cannot locate the projects agent definitions directory: %s\n" "${AGENT_SOURCE}" >&2
         return 1
@@ -69,9 +64,19 @@ remove_repo_managed_agents() {
         fi
 
         local agent_name
+        local expected_source
         agent_name="$(basename "${agent_file}")"
+        expected_source="$(find "${AGENT_SOURCE}" -mindepth 2 -type f -name "${agent_name}" -not -path "*/commands/*" | head -n 1)"
 
         if is_repo_managed_agent "${agent_name}" "${source_agents}"; then
+            if [ -L "${agent_file}" ] && [ -n "${expected_source}" ]; then
+                if [ "$(readlink "${agent_file}")" = "${expected_source}" ]; then
+                    printf "  Keeping existing symlink: %s\n" "${agent_name}"
+                    preserved_count=$((preserved_count + 1))
+                    continue
+                fi
+            fi
+
             printf "  Removing repo agent: %s\n" "${agent_name}"
             rm -f "${agent_file}"
             removed_count=$((removed_count + 1))
@@ -87,19 +92,34 @@ remove_repo_managed_agents() {
 
 symlink_repo_agents() {
     local installed_count=0
+    local skipped_count=0
 
     printf "Installing repo agents from %s...\n" "${AGENT_SOURCE}"
 
     while IFS= read -r source_file; do
         local agent_name
+        local target_link
         agent_name="$(basename "${source_file}")"
+        target_link="${AGENTS_DIR}${agent_name}"
 
-        ln -s "${source_file}" "${AGENTS_DIR}${agent_name}"
+        if [ -L "${target_link}" ]; then
+            printf "  Already installed (symlink exists): %s\n" "${agent_name}"
+            skipped_count=$((skipped_count + 1))
+            continue
+        fi
+
+        if [ -e "${target_link}" ]; then
+            printf "  Skipping existing non-symlink path: %s\n" "${agent_name}"
+            skipped_count=$((skipped_count + 1))
+            continue
+        fi
+
+        ln -s "${source_file}" "${target_link}"
         printf "  Installed: %s\n" "${agent_name}"
         installed_count=$((installed_count + 1))
     done < <(find "${AGENT_SOURCE}" -mindepth 2 -type f -name "*.md" -not -path "*/commands/*")
 
-    printf "Installed %d repo agent(s)\n" "${installed_count}"
+    printf "Installed %d repo agent(s), skipped %d existing agent(s)\n" "${installed_count}" "${skipped_count}"
     return 0
 }
 
