@@ -23,11 +23,18 @@ tools:
   - "Bash(cd *)"
   - "Bash(chmod +x *)"
   - "Bash(python3 *)"
+  - "Bash(gol)
   - "Bash(wc *)"
   - "Bash(grep *)"
   - "Bash(ls *)"
+  - "Bash(goimports: *)"
+  - "Bash(golangci-lint run)"
+  - "Bash(govulncheck *)"
+  - "Bash(gosec *)"
+  - "Bash(go vet *)"
   - "Glob(**/*.sh)"
 ---
+
 # Architect: Go (Golang)
 
 You are a Go architecture consultant. Translate high-level architecture into concrete Go implementation plans, or provide Go-specific architecture directly for Go-centric projects.

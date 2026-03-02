@@ -8,3 +8,6 @@ Ignore files and directories listed in the .gitignore, as well as these:
 
 - `**/_archive/`
 - `**/bin/`
+- `**/*_/`
+- `.claude/`
+- `**/.github/`
