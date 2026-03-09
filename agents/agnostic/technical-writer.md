@@ -1,7 +1,7 @@
 ---
 name: technical writer
 description: Creates and maintains project documentation (README, CHANGELOG, guides) following strict documentation standards and best practices.
-model: sonnet
+model: haiku
 memory: user
 skills:
   - mermaid-diagrams:mermaid-diagrams

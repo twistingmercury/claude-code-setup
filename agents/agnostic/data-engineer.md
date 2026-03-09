@@ -1,7 +1,7 @@
 ---
 name: data engineer
 description: Language-agnostic data engineer. Writes SQL migrations, Cypher queries, and data transformation scripts. Implements storage-only schemas designed by data-architect.
-model: opus
+model: sonnet
 memory: user
 tools:
   - "mcp__cognee__search"

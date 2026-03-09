@@ -1,7 +1,7 @@
 ---
 name: data architect
 description: Database-agnostic data architect. Designs schemas, data models, ERDs, normalization strategies, index plans, and data pipeline architectures. Hands off to data-engineer for implementation.
-model: opus
+model: sonnet
 memory: user
 skills:
   - arch-docs

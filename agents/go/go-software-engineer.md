@@ -1,7 +1,7 @@
 ---
 name: go software engineer
 description: Expert Go engineer for writing, refactoring, optimizing, and architecting production-grade Go code with best practices.
-model: opus
+model: sonnet
 memory: user
 tools:
   - "mcp__cognee__search"
