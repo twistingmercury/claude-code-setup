@@ -23,7 +23,7 @@ tools:
   - "Bash(cd *)"
   - "Bash(chmod +x *)"
   - "Bash(python3 *)"
-  - "Bash(gol)
+  - "Bash(gol)"
   - "Bash(wc *)"
   - "Bash(grep *)"
   - "Bash(ls *)"
