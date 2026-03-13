@@ -50,7 +50,7 @@ services:
 
   # Cognee MCP Server
   cognee-mcp:
-    image: cognee/cognee-mcp:local-main
+    image: ghcr.io/twistingmercury/cognee-mcp:latest
     container_name: cognee_mcp
     ports:
       - "4000:8000"
@@ -116,7 +116,7 @@ services:
 
   # Cognee REST API Server
   cognee-api:
-    image: cognee/cognee-api:local-main
+    image: ghcr.io/twistingmercury/cognee-mcp:latest
     container_name: cognee_api
     ports:
       - "8000:8000"

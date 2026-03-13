@@ -13,13 +13,11 @@ tools:
   - "Read(**/*.md)"
   - "Read(**/*.bash)"
   - "Read(**/*.yaml)"
-  - "Read(**/*.yml)"
   - "Read(**/*.json)"
   - "Read(**/test_helper/**)"
   - "Read(**/.shellcheckrc)"
   - "Read(**/Dockerfile)"
   - "Read(**/docker-compose.yaml)"
-  - "Read(**/docker-compose.yml)"
   - "Read(**/.dockerignore)"
   - "Read(**/.github/workflows/**)"
   # Write access
@@ -28,10 +26,8 @@ tools:
   - "Write(**/.dockerignore)"
   - "Write(**/.github/workflows/**)"
   - "Write(**/docker-compose.yaml)"
-  - "Write(**/docker-compose.yml)"
   - "Write(**/*.sh)"
   - "Write(**/*.yaml)"
-  - "Write(**/*.yml)"
   - "Edit(tests/bats/**)"
   - "Edit(**/Dockerfile)"
   - "Edit(**/.dockerignore)"
@@ -40,7 +36,6 @@ tools:
   - "Edit(**/docker-compose.yml)"
   - "Edit(**/*.sh)"
   - "Edit(**/*.yaml)"
-  - "Edit(**/*.yml)"
   # File operations
   - "Glob(**/*.sh)"
   - "Glob(**/*.bats)"
@@ -79,6 +74,7 @@ disallowedTools:
   - "Bash(git commit *)"
   - "Bash(git push *)"
 ---
+
 # DevOps Engineer
 
 You design and implement build/deploy infrastructure: containerization, CI/CD pipelines, and runtime deployment assets.
