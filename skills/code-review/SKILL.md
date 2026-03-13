@@ -47,15 +47,15 @@ Collect the list of changed/target files and their contents.
 
 Launch all three agents simultaneously using the Task tool:
 
-1. **`code-review-agent`** (tactical)
+1. **`code reviewer`** (tactical)
    - Pattern compliance, linting, best practices
    - Prompt: Provide the file paths and ask it to review against Cognee patterns, run linters, and return structured findings
 
-2. **`solution-architect-agent`** (strategic)
+2. **`solution architect`** (strategic)
    - Architectural concerns, design coherence
    - Prompt: Provide the file paths and ask it to evaluate architectural consistency, separation of concerns, and design coherence
 
-3. **`go-architect-agent`** (Go-specific)
+3. **`go software architect`** (Go-specific)
    - Go coding conventions, naming conventions, implementation conventions
    - Prompt: Provide the Go file paths and ask it to check for idiomatic Go (stuttering, interface design, error wrapping, context propagation, package structure, naming)
 
