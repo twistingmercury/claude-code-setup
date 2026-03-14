@@ -4,7 +4,6 @@ services:
   # PostgreSQL for relational data
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: cognee_postgres
     ports:
       - "5432:5432"
     volumes:
@@ -26,7 +25,6 @@ services:
   # Neo4j Graph Database
   neo4j:
     image: neo4j:5-community
-    container_name: cognee_neo4j
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -51,7 +49,6 @@ services:
   # Cognee MCP Server
   cognee-mcp:
     image: ghcr.io/twistingmercury/cognee-mcp:latest
-    container_name: cognee_mcp
     ports:
       - "4000:8000"
     volumes:
@@ -117,7 +114,6 @@ services:
   # Cognee REST API Server
   cognee-api:
     image: ghcr.io/twistingmercury/cognee-mcp:latest
-    container_name: cognee_api
     ports:
       - "8000:8000"
     volumes:
