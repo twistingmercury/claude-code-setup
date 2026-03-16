@@ -1,6 +1,6 @@
 # Claude Code Agent Ecosystem
 
-> **Maturity Level**: ARCHIVED - No longer for used. All attention is now on [Mnemonic](https://github.com/twistingmercury/mnemonic)
+> **Maturity Level**: ARCHIVED - No longer used. All attention is now on [Mnemonic](https://github.com/twistingmercury/mnemonic)
 >
 > - **Emerging**: Prototype, not production-ready, expect breaking changes
 > - **Basic**: Production-ready but actively evolving, expect minor version changes
