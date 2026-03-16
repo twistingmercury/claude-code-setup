@@ -1,6 +1,6 @@
 # Claude Code Agent Ecosystem
 
-> **Maturity Level**: ARCHIVED - No longer for used. All attention is now on [Mnemonic](https://github.com/twistingmercury/mnemonic-patterns)
+> **Maturity Level**: ARCHIVED - No longer for used. All attention is now on [Mnemonic](https://github.com/twistingmercury/mnemonic)
 >
 > - **Emerging**: Prototype, not production-ready, expect breaking changes
 > - **Basic**: Production-ready but actively evolving, expect minor version changes
@@ -8,11 +8,6 @@
 > - **Archived**: No longer maintained, but left readonly for others to fork and use.
 
 ---
-
-> **ARCHIVED**
-> This project has now been deprecated. It won't be maintained any further. Feel free to fork it and make it your own.
-
---- 
 
 > NOTE: The skill `/rlm` is licensed separately as it is a work derived from John Adeojo (brainqub3). The project is here: https://github.com/brainqub3/claude_code_RLM
 
